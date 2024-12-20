@@ -1,4 +1,4 @@
-package com.example.purchase_order
+package com.luccasleme.purchase_order
 
 import io.flutter.embedding.android.FlutterActivity
 
