@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "779041682121",
+    "project_id": "purchase-order-b2741",
+    "storage_bucket": "purchase-order-b2741.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779041682121:android:569838c3aa544482935318",
+        "android_client_info": {
+          "package_name": "com.luccasleme.purchase_order"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGYZAlTZIgfiNjtOAEEMgyp4HjV-dueX8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
