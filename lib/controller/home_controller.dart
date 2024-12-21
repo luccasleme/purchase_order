@@ -4,11 +4,13 @@ import 'package:get/get.dart';
 import 'package:purchase_order/controller/order_model.dart';
 import 'package:purchase_order/helpers/database.dart';
 import 'package:purchase_order/model/task_model.dart';
+import 'package:purchase_order/model/user_model.dart';
 import 'package:purchase_order/view/pages/login.dart';
 import 'package:purchase_order/view/pages/task.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeController extends GetxController {
+  Rx<UserModel>? user;
   List<OrderModel> homeList = <OrderModel>[].obs;
   List<TaskModel> taskList = <TaskModel>[].obs;
   List<String> quantity = <String>[].obs;
@@ -39,18 +41,16 @@ class HomeController extends GetxController {
     docAllOrders.get().then(
       (DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
-        homeList.isEmpty
-            ? {
-                for (var i = 0; i < data['allOrders'].length; i++)
-                  {
-                    homeList.add(
-                      OrderModel.fromMap(data['allOrders'][i]),
-                    )
-                  },
-              }
-            : null;
+
+        for (var i = 0; i < data['allOrders'].length; i++) {
+          homeList.add(
+            OrderModel.fromMap(data['allOrders'][i]),
+          );
+        }
 
         for (var order in homeList) {
+          loading.value = true;
+          refresh();
           if (order.status == 'Open') {
             open.add(order);
           }
@@ -70,11 +70,16 @@ class HomeController extends GetxController {
           if (order.status == 'Pending Billing/Partially Received') {
             pBpR.add(order);
           }
+          loading.value = false;
+          refresh();
         }
+        loading.value = false;
         refresh();
       },
       onError: (e) => print("Error getting document: $e"),
     );
+    loading.value = false;
+    refresh();
   }
 
   setOrderByStatusList() {

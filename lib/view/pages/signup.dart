@@ -3,11 +3,13 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/signup_controller.dart';
 import 'package:purchase_order/view/pages/login.dart';
-import 'package:purchase_order/view/widgets/common/textfield.dart';
 import 'package:purchase_order/view/widgets/page_exclusive/login_widgets.dart';
+import 'package:purchase_order/view/widgets/page_exclusive/signup_widgets.dart';
 
 class SignUpPage extends StatelessWidget {
   final controller = Get.put(SignUpController());
+  final isPass = true.obs;
+  final isConfirmPass = true.obs;
   SignUpPage({super.key});
 
   @override
@@ -26,14 +28,26 @@ class SignUpPage extends StatelessWidget {
               flex: 3,
               child: Column(
                 children: [
-                  AppTextfield(
-                    label: 'Usuário',
+                  SignUpTextfield(
+                    label: 'Name',
+                    controller: controller.nameController,
+                  ),
+                  SignUpTextfield(
+                    label: 'Email',
                     controller: controller.userController,
                   ),
-                  AppTextfield(
-                    label: 'Senha',
+                  SignUpTextfield(
+                    label: 'Password',
                     controller: controller.passwordController,
-                    isPass: true,
+                    isPass: controller.isPass.value,
+                    hasSuffix: true,
+                  ),
+                  SignUpTextfield(
+                    label: 'Confirm Password',
+                    controller: controller.passwordConfirmController,
+                    isPass: controller.isConfirmPass.value,
+                    isConfirm: true,
+                    hasSuffix: true,
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 24),
@@ -43,10 +57,10 @@ class SignUpPage extends StatelessWidget {
                         Gap(0),
                         TextButton(
                           onPressed: () {
-                            Get.off(LoginPage());
+                            Get.off(() => LoginPage());
                           },
                           child: Text(
-                            'Já tenho conta.',
+                            'Already have an account.',
                             style:
                                 TextStyle(color: Color.fromRGBO(0, 0, 100, 1)),
                           ),
@@ -61,26 +75,14 @@ class SignUpPage extends StatelessWidget {
                       foregroundColor: Colors.white,
                     ),
                     onPressed: () {
-                      controller
-                          .signUp(
+                      controller.signUp(
+                        controller.nameController.text,
                         controller.userController.text,
                         controller.passwordController.text,
-                      )
-                          .then(
-                        (_) {
-                          controller.errorMessage.value != ''
-                              ? Get.snackbar(
-                                  'Error:',
-                                  controller.errorMessage.value,
-                                  colorText: Colors.white,
-                                  backgroundColor:
-                                      const Color.fromRGBO(204, 0, 51, 1),
-                                )
-                              : null;
-                        },
+                        controller.passwordConfirmController.text,
                       );
                     },
-                    child: const Text('Cadastrar'),
+                    child: const Text('Sign Up'),
                   ),
                 ],
               ),

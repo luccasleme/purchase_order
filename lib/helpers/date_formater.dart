@@ -13,7 +13,7 @@ String dateFormater(DateTime date) {
     'NOV',
     'DEC',
   ];
-  final day = date.day;
+  final day = date.day.toString().length == 1 ? '0${date.day}' : date.day;
   final month = months[date.month - 1];
   final year = date.year;
   return '$day $month\n$year';

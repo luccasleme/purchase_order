@@ -24,6 +24,7 @@ class TaskDetail extends StatelessWidget {
         final order = orderList[index];
         return Scaffold(
           appBar: AppBar(
+            leading: controller.loading.value ? Container() : null,
             title: Text(order.vendorName),
             iconTheme: const IconThemeData(color: Colors.white),
           ),
@@ -93,8 +94,7 @@ class TaskDetail extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   horizontal: Screen.width(context) / 6),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   ElevatedButton(
                                       style: ElevatedButton.styleFrom(
@@ -104,14 +104,14 @@ class TaskDetail extends StatelessWidget {
                                         controller.deny(order);
                                       },
                                       child: Text('Close')),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.green,
-                                          foregroundColor: Colors.white),
-                                      onPressed: () {
-                                        controller.aprove(order);
-                                      },
-                                      child: Text('Billed')),
+                                  // ElevatedButton(
+                                  //     style: ElevatedButton.styleFrom(
+                                  //         backgroundColor: Colors.green,
+                                  //         foregroundColor: Colors.white),
+                                  //     onPressed: () {
+                                  //       controller.aprove(order);
+                                  //     },
+                                  //     child: Text('Billed')),
                                 ],
                               ),
                             )

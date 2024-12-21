@@ -10,6 +10,7 @@ final ThemeData myTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   fontFamily: GoogleFonts.notoSans().fontFamily,
   appBarTheme: const AppBarTheme(
+    centerTitle: false,
     elevation: 0,
     color: Color.fromRGBO(0, 45, 114, 1),
     actionsIconTheme: IconThemeData(color: Colors.white),

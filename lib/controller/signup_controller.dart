@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:purchase_order/helpers/database.dart';
-import 'package:purchase_order/model/user_model.dart';
 import 'package:purchase_order/view/pages/home.dart';
+import 'package:purchase_order/model/user_model.dart';
 import 'package:purchase_order/view/widgets/common/alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpController extends GetxController {
   TextEditingController userController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirmController = TextEditingController();
   late SharedPreferences prefs;
+  var isPass = true.obs;
+  var isConfirmPass = true.obs;
   Rx<String> errorMessage = ''.obs;
 
   @override
@@ -19,40 +23,78 @@ class SignUpController extends GetxController {
     super.onInit();
   }
 
-  signUp(String user, String pass) async {
-    try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-        email: user,
-        password: pass,
-      )
-          .then((value) async {
-        try {
-          final String userId = value.user!.uid;
-          final UserModel userModel = UserModel(email: user, userId: userId);
-          final Map<String, dynamic> newUser = UserModel.toMap(userModel);
-          db.collection("users").add(newUser);
-        } on FirebaseException catch (e) {
-          errorMessage.value = e.message ?? 'Unknown error.';
-        } catch (e) {
-          errorMessage.value = e.toString();
-        }
+  toggleShowPassword(bool? isConfirm) {
+    (isConfirm ?? false)
+        ? {isConfirmPass.value = !isConfirmPass.value}
+        : {isPass.value = !isPass.value};
+    refresh();
+  }
 
-        prefs.setString('username', user);
-        Get.off(() => HomePage());
-        Alert.aproved(
-          title: 'Success:',
-          message: 'Account created successfully',
-        );
-      });
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        errorMessage.value = 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        errorMessage.value = 'The account already exists for that email.';
+  signUp(String name, String email, String password, String confirmPass) async {
+    if (fieldChecker(name, email, password, confirmPass)) {
+      try {
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        )
+            .then((value) async {
+          try {
+            final String userId = value.user!.uid;
+            final UserModel userModel =
+                UserModel(email: email, userId: userId, name: name);
+            final Map<String, dynamic> newUser = UserModel.toMap(userModel);
+            db.collection("users").add(newUser);
+          } on FirebaseException catch (e) {
+            errorMessage.value = e.message ?? 'Unknown error.';
+            showError();
+          } catch (e) {
+            errorMessage.value = e.toString();
+            showError();
+          }
+
+          prefs.setString('username', email);
+          Get.off(() => HomePage());
+          Alert.aproved(
+            title: 'Success:',
+            message: 'Account created successfully',
+          );
+        });
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          errorMessage.value = 'The password provided is too weak.';
+          showError();
+        } else if (e.code == 'email-already-in-use') {
+          errorMessage.value = 'The account already exists for that email.';
+          showError();
+        }
+      } catch (e) {
+        errorMessage.value = 'Unknown error.';
+        showError();
       }
-    } catch (e) {
-      errorMessage.value = 'Unknown error.';
+    } else {
+      showError();
     }
+  }
+
+  bool fieldChecker(
+      String name, String email, String password, String confirmPass) {
+    if (name.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        confirmPass.isEmpty) {
+      errorMessage.value = 'All fields are required.';
+      return false;
+    }
+    if (password != confirmPass) {
+      errorMessage.value = 'Passwords should match';
+      return false;
+    }
+    return true;
+  }
+
+  showError() {
+    return Get.showSnackbar(
+        Alert.error(title: 'Error:', message: errorMessage.value));
   }
 }

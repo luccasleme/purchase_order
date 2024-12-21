@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/order_model.dart';
 import 'package:purchase_order/helpers/database.dart';
+import 'package:purchase_order/view/pages/home.dart';
 
 class DetailController extends GetxController {
   Rx<dynamic> taskId = ''.obs;
@@ -33,10 +34,12 @@ class DetailController extends GetxController {
 
 //PEGA HTML DA APROVAÇÃO
   deny(OrderModel order) async {
+    loading.value = true;
+    refresh();
     final updatedOrder = OrderModel(
       date: order.date,
       documentNumber: order.documentNumber,
-      status: 'Open',
+      status: 'Closed',
       quantityOrdered: order.quantityOrdered,
       vendorEntityId: order.vendorEntityId,
       vendorName: order.vendorName,
@@ -68,6 +71,8 @@ class DetailController extends GetxController {
         );
       },
     );
+    loading.value = false;
+    Get.offAll(() => HomePage());
   }
 
   aprove(OrderModel order) async {
