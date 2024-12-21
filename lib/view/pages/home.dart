@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/home_controller.dart';
+import 'package:purchase_order/controller/login_controller.dart';
 import 'package:purchase_order/controller/task_controller.dart';
 import 'package:purchase_order/helpers/size.dart';
 
 class HomePage extends StatelessWidget {
+  final LoginController loginController = Get.find();
   final homeController = Get.put(HomeController());
   final taskController = Get.put(TaskController());
 
@@ -14,9 +16,23 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (_) {
+        String name = loginController.user.value.name;
+        bool checker() {
+          if (homeController.ordersByStatus[0].isEmpty ||
+              homeController.ordersByStatus[1].isEmpty ||
+              homeController.ordersByStatus[2].isEmpty ||
+              homeController.ordersByStatus[3].isEmpty ||
+              homeController.ordersByStatus[4].isEmpty ||
+              homeController.ordersByStatus[5].isEmpty) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Bem-Vindo!'),
+            title: Text('Welcome, $name!'),
             iconTheme: const IconThemeData(color: Colors.white),
             actions: [
               IconButton(
@@ -30,17 +46,21 @@ class HomePage extends StatelessWidget {
               )
             ],
           ),
-          body: homeController.loading.value
+          body: checker()
               ? const Center(
                   child: CircularProgressIndicator(
                     color: Color.fromRGBO(0, 54, 114, 1),
                   ),
                 )
               : GridView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Number of columns
-                    // crossAxisSpacing: 8.0, // Spacing between columns
-                    // mainAxisSpacing: 8.0, // Spacing between rows
+                    crossAxisCount: 3, // Number of columns
+
+                    crossAxisSpacing:
+                        Screen.width(context) / 50, // Spacing between columns
+                    mainAxisSpacing:
+                        Screen.width(context) / 50, // Spacing between rows
                   ),
                   //padding: EdgeInsets.all(16),
                   shrinkWrap: true,
@@ -52,7 +72,7 @@ class HomePage extends StatelessWidget {
                       'Fully Billed',
                       'Pending Bill',
                       'Partially Received',
-                      'Pending Bill/Partially Received',
+                      'Pending Bill/\nPartially Received',
                     ];
                     final iconList = <IconData>[
                       Icons.mail,
@@ -62,52 +82,43 @@ class HomePage extends StatelessWidget {
                       Icons.receipt,
                       Icons.receipt_long
                     ];
+
                     return InkWell(
                       onTap: () {
                         homeController.toTaskList(titleList[index], index);
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          //borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.all(20),
-                        child: GridTile(
-                          header: Align(
-                            alignment: Alignment.topRight,
-                            child: FittedBox(
+                      child: GridTile(
+                        header: Align(
+                          alignment: Alignment.topRight,
+                          child: FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: homeController
-                                      .ordersByStatus[index].isNotEmpty
-                                  ? Text(
-                                      homeController
-                                          .ordersByStatus[index].length
-                                          .toString(),
-                                      style: TextStyle(
-                                        color: Colors.lightBlue,
-                                        fontSize: Screen.width(context) / 30,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  : SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.lightBlueAccent,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          footer: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              titleList[index],
-                            ),
-                          ),
-                          child: Icon(
-                            iconList[index],
-                            size: Screen.width(context) / 4,
-                            color: Color.fromRGBO(0, 0, 100, 1),
+                              child: Text(
+                                homeController.ordersByStatus[index].length
+                                    .toString(),
+                                style: TextStyle(
+                                  color: Colors.lightBlue,
+                                  fontSize: Screen.width(context) / 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )),
+                        ),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Column(
+                            children: [
+                              Icon(
+                                iconList[index],
+                                size: Screen.width(context) / 5,
+                                color: Color.fromRGBO(0, 0, 100, 1),
+                              ),
+                              FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  titleList[index],
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

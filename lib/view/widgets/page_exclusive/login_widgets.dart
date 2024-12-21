@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -22,7 +21,7 @@ class RememberMeCheckbox extends StatelessWidget {
               controller.toggleCheckbox(value!);
             },
           ),
-          const Text('Lembrar de mim')
+          const Text('Remember me')
         ],
       ),
     );
@@ -36,9 +35,22 @@ class LoginLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       flex: 1,
-      child: Image.asset(
-        'assets/logo.jpeg',
-        width: Screen.width(context) / 1.5,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12),
+        child: SizedBox(
+          width: Screen.width(context) / 1,
+          //height: Screen.width(context) / 1.5,
+          child: FittedBox(
+            fit: BoxFit.fill,
+            child: Text(
+              'Purchase Order\nManagment',
+              style: TextStyle(
+                  //fontSize: Screen.width(context) / 15,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -57,7 +69,7 @@ class LoginButton extends StatelessWidget {
           backgroundColor: const Color.fromRGBO(0, 45, 114, 1),
           foregroundColor: Colors.white,
         ),
-        onPressed: () {
+        onPressed: () async {
           controller
               .logIn(
             controller.userController.text,
@@ -65,18 +77,78 @@ class LoginButton extends StatelessWidget {
           )
               .then(
             (_) {
-              controller.errorMessage.value != ''
-                  ? Get.snackbar(
-                      'Error:',
-                      controller.errorMessage.value,
-                      colorText: Colors.white,
-                      backgroundColor: const Color.fromRGBO(204, 0, 51, 1),
-                    )
-                  : null;
+              controller.getUser(controller.userController.text);
             },
           );
         },
         child: const Text('Login'),
+      ),
+    );
+  }
+}
+
+class LoginTextfield extends StatelessWidget {
+  final TextEditingController? controller;
+  final bool? hasSuffix;
+  final bool? isPass;
+  final String? label;
+  final LoginController loginController = Get.find();
+  LoginTextfield(
+      {this.label, this.controller, this.isPass, this.hasSuffix, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 4, right: 24, left: 24),
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+          color: const Color.fromRGBO(0, 45, 114, 0.2),
+          borderRadius: BorderRadius.circular(4)),
+      child: TextField(
+        controller: controller,
+        obscureText: isPass ?? false,
+        decoration: InputDecoration(
+          suffixIcon: (hasSuffix ?? false)
+              ? IconButton(
+                  onPressed: () {
+                    loginController.togglePassword();
+                  },
+                  icon: Icon(Icons.remove_red_eye),
+                )
+              : null,
+          floatingLabelStyle:
+              const TextStyle(color: Color.fromRGBO(0, 45, 114, 1)),
+          contentPadding: const EdgeInsets.only(left: 8),
+          border: InputBorder.none,
+          label: Text(label ?? ''),
+        ),
+      ),
+    );
+  }
+}
+
+class BottomBanner extends StatelessWidget {
+  const BottomBanner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: Screen.height(context) / 10),
+      decoration: BoxDecoration(color: const Color.fromRGBO(0, 45, 114, 1)),
+      width: Screen.width(context),
+      height: Screen.width(context) / 10,
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 8.0, bottom: 4),
+          child: Text(
+            'Porfolio by Luccas F. Leme',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }

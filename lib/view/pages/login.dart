@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/login_controller.dart';
 import 'package:purchase_order/view/pages/signup.dart';
-import 'package:purchase_order/view/widgets/common/textfield.dart';
 import 'package:purchase_order/view/widgets/page_exclusive/login_widgets.dart';
 
 class LoginPage extends StatelessWidget {
@@ -25,14 +24,15 @@ class LoginPage extends StatelessWidget {
               flex: 3,
               child: Column(
                 children: [
-                  AppTextfield(
+                  LoginTextfield(
                     label: 'Usuário',
                     controller: controller.userController,
                   ),
-                  AppTextfield(
+                  LoginTextfield(
                     label: 'Senha',
                     controller: controller.passwordController,
-                    isPass: true,
+                    isPass: controller.isPass.value,
+                    hasSuffix: true,
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 24),
@@ -45,7 +45,7 @@ class LoginPage extends StatelessWidget {
                               Get.off(() => SignUpPage());
                             },
                             child: Text(
-                              'Criar uma conta',
+                              'Create an account',
                               style: TextStyle(
                                   color: Color.fromRGBO(0, 0, 100, 1)),
                             )),
@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(flex: 1, child: Image.asset('assets/banner.png')),
+            BottomBanner()
           ],
         ),
       ),

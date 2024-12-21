@@ -1,16 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:purchase_order/model/user_model.dart';
 import 'package:purchase_order/view/pages/home.dart';
 import 'package:purchase_order/view/widgets/common/alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
+  Rx<UserModel> user = UserModel(name: '', email: '', userId: '').obs;
   final auth = FirebaseAuth.instance;
   final userController = TextEditingController();
   final passwordController = TextEditingController();
   var errorMessage = ''.obs;
   var isChecked = false.obs;
+  Rx<bool> isPass = true.obs;
   late SharedPreferences prefs;
 
   @override
@@ -46,7 +49,7 @@ class LoginController extends GetxController {
               Get.showSnackbar(
                 Alert.aproved(
                   title: 'Sucesso:',
-                  message: 'Login efetuado com sucesso.',
+                  message: 'Logged in successfully.',
                 ),
               ),
               Get.off(() => HomePage()),
@@ -56,10 +59,11 @@ class LoginController extends GetxController {
               Get.showSnackbar(
                 Alert.aproved(
                   title: 'Sucesso:',
-                  message: 'Login efetuado com sucesso.',
+                  message: 'Logged in successfully.',
                 ),
               ),
               Get.off(() => HomePage()),
+              getUser(user),
             };
     } on FirebaseException catch (e) {
       errorMessage.value = e.message ?? 'Unknown error.';
@@ -67,10 +71,13 @@ class LoginController extends GetxController {
       e.toString().startsWith(
               'ClientException with SocketException: Failed host lookup:')
           ? errorMessage.value = 'Sem acesso à internet.'
-          : errorMessage.value = 'Erro desconhecido';
+          : errorMessage.value = 'Unknown error.';
     }
   }
 
+  getUser(String email) async {
+    user.value = await UserModel.userFromDB(email);
+  }
 //
 
 //FUNÇÃO LEMBRAR DE MIM
@@ -84,5 +91,10 @@ class LoginController extends GetxController {
             rememberMe == true ? {logIn(user!, pass!)} : null
           }
         : null;
+  }
+
+  togglePassword() {
+    isPass.value = !isPass.value;
+    refresh();
   }
 }

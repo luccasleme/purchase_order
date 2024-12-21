@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/home_controller.dart';
 import 'package:purchase_order/controller/task_controller.dart';
@@ -21,7 +20,7 @@ class TaskListPage extends StatelessWidget {
       builder: (_) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(title),
+            title: Text('$title Orders'),
             iconTheme: const IconThemeData(color: Colors.white),
           ),
           body: Stack(
@@ -42,7 +41,7 @@ class TaskListPage extends StatelessWidget {
                             top: index == 0 ? 4 : 0),
                         padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                            color: Colors.blueGrey.shade300,
+                            color: Color.fromRGBO(0, 45, 114, 0.35),
                             borderRadius: BorderRadius.circular(10)),
                         child: ListTile(
                           contentPadding: const EdgeInsets.only(left: 4),
@@ -56,30 +55,37 @@ class TaskListPage extends StatelessWidget {
                                   'ID:',
                                   style: TextStyle(
                                     color: Color.fromRGBO(0, 0, 200, 1),
-                                    fontSize: Screen.width(context) / 35,
+                                    fontSize: Screen.width(context) / 25,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 FittedBox(
-                                  fit: BoxFit.fitWidth,
+                                  fit: BoxFit.contain,
                                   child: Text(
                                     order.documentNumber,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
+                                        fontSize: Screen.width(context) / 30,
                                         color: Colors.black),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          title: Text(order.vendorName),
+                          title: Text(
+                            order.vendorName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: Screen.width(context) / 25,
+                                color: Colors.black),
+                          ),
                           trailing: Text(
                             dateFormater(order.date),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
-                              fontSize: Screen.width(context) / 38,
+                              fontSize: Screen.width(context) / 32,
                             ),
                           ),
                           onTap: () {
