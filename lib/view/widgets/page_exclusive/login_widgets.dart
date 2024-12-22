@@ -66,15 +66,9 @@ class LoginButton extends StatelessWidget {
           foregroundColor: Colors.white,
         ),
         onPressed: () async {
-          controller
-              .logIn(
+          controller.logIn(
             controller.userController.text,
             controller.passwordController.text,
-          )
-              .then(
-            (_) {
-              controller.getUser(controller.userController.text);
-            },
           );
         },
         child: const Text('Login'),

@@ -4,7 +4,6 @@ import 'package:purchase_order/controller/home_controller.dart';
 import 'package:purchase_order/controller/task_controller.dart';
 import 'package:purchase_order/utils/date_formater.dart';
 import 'package:purchase_order/utils/size.dart';
-import 'package:purchase_order/view/widgets/common/nothing.dart';
 import 'package:purchase_order/view/widgets/page_exclusive/task_widgets.dart';
 
 class TaskListPage extends StatelessWidget {
@@ -20,16 +19,30 @@ class TaskListPage extends StatelessWidget {
       builder: (_) {
         return Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  homeController.searchHomeList[i] =
+                      homeController.ordersByStatus[i];
+                  taskController.searchController.text = '';
+
+                  Get.back();
+                },
+                icon: Icon(Icons.arrow_back_ios)),
             title: Text('$title Orders'),
             iconTheme: const IconThemeData(color: Colors.white),
+            actions: [
+              TaskSearch(
+                index: i,
+              )
+            ],
           ),
           body: Stack(
             children: [
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: homeController.ordersByStatus[i].length,
+                itemCount: homeController.searchHomeList[i].length,
                 itemBuilder: (context, index) {
-                  final orderList = homeController.ordersByStatus[i];
+                  final orderList = homeController.searchHomeList[i];
                   final order = orderList[index];
                   return Column(
                     children: [
@@ -97,9 +110,6 @@ class TaskListPage extends StatelessWidget {
                   );
                 },
               ),
-              taskController.reproving.value
-                  ? const TaskDrawer()
-                  : const Nothing(),
             ],
           ),
         );

@@ -1,30 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 
 class Alert {
-  static error({String? title, String? message}) {
+  static error(String? message, {String? title}) {
+    return Get.showSnackbar(
+        Alert.errorSnackbar(title: title, message: message));
+  }
+
+  static success(String? message, {String? title}) {
+    return Get.showSnackbar(Alert.successSnackBar(title: title, message));
+  }
+
+  static errorSnackbar({String? title, String? message}) {
     final errorSnackbar = GetSnackBar(
       backgroundColor: const Color.fromRGBO(204, 0, 51, 1),
       margin: const EdgeInsets.symmetric(horizontal: 10),
       padding: const EdgeInsets.all(16),
       snackPosition: SnackPosition.TOP,
       duration: const Duration(seconds: 2),
-      title: title,
-      message: message,
+      title: 'Error:',
+      message: message ?? 'Unknown error.',
       borderRadius: 15,
     );
     return errorSnackbar;
   }
-  static aproved({String? title, String? message}) {
+
+  static successSnackBar(String? message, {String? title}) {
     final errorSnackbar = GetSnackBar(
-      backgroundColor:  Colors.green,
+      backgroundColor: Colors.green,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       padding: const EdgeInsets.all(16),
       snackPosition: SnackPosition.TOP,
       duration: const Duration(seconds: 2),
-      title: title,
-      message: message,
+      title: 'Success:',
+      message: message ?? 'Success',
       borderRadius: 15,
     );
     return errorSnackbar;

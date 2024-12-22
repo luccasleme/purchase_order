@@ -32,47 +32,42 @@ class LoginController extends GetxController {
 
 //FAZ LOGIN NO APP
   logIn(String user, String password) async {
+    _fieldChecker(
+      user,
+      password,
+    );
     if (user.isEmpty || password.isEmpty) {
       errorMessage.value = 'Preencha usuário e senha por favor';
+      Alert.error(errorMessage.value);
       return;
     }
 
     try {
-      await auth.signInWithEmailAndPassword(
-          email: user.trimLeft().trimRight(), password: password);
+      await auth
+          .signInWithEmailAndPassword(
+              email: user.trimLeft().trimRight(), password: password)
+          .then((value) {
+        errorMessage.value = '';
+        Get.off(() => HomePage());
+        Alert.success('Logged In Successfully!');
+        getUser(user);
+      });
       isChecked.value
           ? {
               prefs.setBool('remember', isChecked.value),
               prefs.setString('username', user),
               prefs.setString('password', password),
-              Get.showSnackbar(Alert.aproved(
-                  title: 'Sucesso:', message: 'Logged in successfully.')),
             }
-          : {
-              Get.showSnackbar(
-                Alert.aproved(
-                  title: 'Sucess:',
-                  message: 'Logged in successfully.',
-                ),
-              ),
-              getUser(user),
-            };
-      Get.off(() => HomePage());
-      errorMessage.value = '';
+          : null;
     } on FirebaseAuthException catch (e) {
       errorMessage.value = e.message ?? 'Unknown error.';
-      Get.showSnackbar(
-        Alert.error(title: 'Erro:', message: errorMessage.value),
-      );
+      Alert.error(errorMessage.value);
     } catch (e) {
       e.toString().startsWith(
               'ClientException with SocketException: Failed host lookup:')
           ? errorMessage.value = 'Sem acesso à internet.'
           : errorMessage.value = 'Unknown error.';
-      Alert.error(
-        title: 'Erro:',
-        message: errorMessage.value,
-      );
+      Alert.error(errorMessage.value);
     }
   }
 
@@ -97,5 +92,17 @@ class LoginController extends GetxController {
   togglePassword() {
     isPass.value = !isPass.value;
     refresh();
+  }
+
+  bool _fieldChecker(
+    String email,
+    String password,
+  ) {
+    if (email.isEmpty || password.isEmpty) {
+      errorMessage.value = 'All fields are required.';
+      return false;
+    }
+
+    return true;
   }
 }
