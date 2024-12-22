@@ -22,6 +22,16 @@ class TaskDetail extends StatelessWidget {
       builder: (_) {
         final orderList = homeController.ordersByStatus[i];
         final order = orderList[index];
+        statusFormat() {
+          if (order.status.contains('/')) {
+            final List<String> pBpR = order.status.split('/');
+            final status = '${pBpR[0]}/\n${pBpR[1]}';
+            return status;
+          } else {
+            return order.status;
+          }
+        }
+
         return Scaffold(
           appBar: AppBar(
             leading: controller.loading.value ? Container() : null,
@@ -44,24 +54,28 @@ class TaskDetail extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Order status: ',
-                                        style: TextStyle(
-                                            fontSize:
-                                                Screen.width(context) / 25,
-                                            fontWeight: FontWeight.bold)),
-                                    Text('${order.status}.',
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontSize:
-                                                Screen.width(context) / 25,
-                                            fontWeight: FontWeight.bold))
+                                    Text(
+                                      'Order status: ',
+                                      style: TextStyle(
+                                          fontSize: Screen.width(context) / 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      statusFormat(),
+                                      style: TextStyle(
+                                          color: Colors.green,
+                                          fontSize: Screen.width(context) / 25,
+                                          fontWeight: FontWeight.bold),
+                                    )
                                   ],
                                 ),
                                 Text(dateFormater(order.date),
                                     textAlign: TextAlign.center),
                               ],
                             ),
+                            Gap(4),
                             Row(
                               children: [
                                 Text('Qty ordered: ',
@@ -89,32 +103,30 @@ class TaskDetail extends StatelessWidget {
                                     '\n\n\nQty Received: ${order.quantityReceived.toString()}.'),
                               ],
                             ),
-                            Gap(Screen.height(context) / 6),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: Screen.width(context) / 6),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
+                            Gap(Screen.height(context) / 3),
+                            !(order.status == 'Closed')
+                                ? Center(
+                                    child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.red,
                                           foregroundColor: Colors.white),
                                       onPressed: () {
                                         controller.deny(order);
                                       },
-                                      child: Text('Close')),
-                                  // ElevatedButton(
-                                  //     style: ElevatedButton.styleFrom(
-                                  //         backgroundColor: Colors.green,
-                                  //         foregroundColor: Colors.white),
-                                  //     onPressed: () {
-                                  //       controller.aprove(order);
-                                  //     },
-                                  //     child: Text('Billed')),
-                                ],
-                              ),
-                            )
+                                      child: Text('Close'),
+                                    ),
+                                  )
+                                : Center(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.green,
+                                          foregroundColor: Colors.white),
+                                      onPressed: () {
+                                        controller.open(order);
+                                      },
+                                      child: Text('Open'),
+                                    ),
+                                  )
                           ],
                         ),
                       ),

@@ -72,7 +72,7 @@ class HomePage extends StatelessWidget {
                       'Fully Billed',
                       'Pending Bill',
                       'Partially Received',
-                      'Pending Bill/\nPartially Received',
+                      'Pending Billing/\nPartially Received',
                     ];
                     final iconList = <IconData>[
                       Icons.mail,
@@ -105,6 +105,7 @@ class HomePage extends StatelessWidget {
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Icon(
                                 iconList[index],

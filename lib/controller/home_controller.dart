@@ -69,6 +69,7 @@ class HomeController extends GetxController {
           }
           if (order.status == 'Pending Billing/Partially Received') {
             pBpR.add(order);
+            print(order.status);
           }
           loading.value = false;
           refresh();
@@ -88,7 +89,7 @@ class HomeController extends GetxController {
     ordersByStatus.add(fullyBilled);
     ordersByStatus.add(pendingBill);
     ordersByStatus.add(partiallyReceived);
-    ordersByStatus.add(pendingBill);
+    ordersByStatus.add(pBpR);
   }
 
 //LOGOUT
