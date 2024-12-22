@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/login_controller.dart';
-import 'package:purchase_order/helpers/size.dart';
+import 'package:purchase_order/utils/size.dart';
 
 class RememberMeCheckbox extends StatelessWidget {
   final LoginController controller = Get.find();
@@ -33,22 +33,18 @@ class LoginLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12),
-        child: SizedBox(
-          width: Screen.width(context) / 1,
-          //height: Screen.width(context) / 1.5,
-          child: FittedBox(
-            fit: BoxFit.fill,
-            child: Text(
-              'Purchase Order\nManagment',
-              style: TextStyle(
-                  //fontSize: Screen.width(context) / 15,
-                  ),
-              textAlign: TextAlign.center,
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 32.0),
+      child: SizedBox(
+        width: Screen.width(context) / 1.5,
+        child: FittedBox(
+          fit: BoxFit.fill,
+          child: Text(
+            'Purchase Order\nManagment',
+            style: TextStyle(
+                //fontSize: Screen.width(context) / 15,
+                ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/order_model.dart';
-import 'package:purchase_order/helpers/database.dart';
+import 'package:purchase_order/utils/database.dart';
 import 'package:purchase_order/view/pages/home.dart';
 
 class DetailController extends GetxController {

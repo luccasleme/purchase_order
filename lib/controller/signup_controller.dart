@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:purchase_order/helpers/database.dart';
+import 'package:purchase_order/utils/database.dart';
 import 'package:purchase_order/view/pages/home.dart';
 import 'package:purchase_order/model/user_model.dart';
 import 'package:purchase_order/view/widgets/common/alert.dart';

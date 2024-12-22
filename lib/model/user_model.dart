@@ -1,4 +1,4 @@
-import 'package:purchase_order/helpers/database.dart';
+import 'package:purchase_order/utils/database.dart';
 
 class UserModel {
   String email;

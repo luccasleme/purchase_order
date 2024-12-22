@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/detail_controller.dart';
 import 'package:purchase_order/controller/task_controller.dart';
-import 'package:purchase_order/helpers/size.dart';
+import 'package:purchase_order/utils/size.dart';
 
 class Reason extends StatelessWidget {
   final bool isDetail;
