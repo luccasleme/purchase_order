@@ -428,10 +428,10 @@
       "languageVersion": "3.6"
     }
   ],
-  "generated": "2024-12-20T08:22:24.279663Z",
+  "generated": "2024-12-22T08:59:32.591246Z",
   "generator": "pub",
   "generatorVersion": "3.6.0",
   "flutterRoot": "file:///Users/luccas/Developer/flutter",
-  "flutterVersion": "3.27.0",
+  "flutterVersion": "3.27.1",
   "pubCache": "file:///Users/luccas/.pub-cache"
 }

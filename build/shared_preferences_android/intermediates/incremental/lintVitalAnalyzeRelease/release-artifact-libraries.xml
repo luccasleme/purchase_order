@@ -34,9 +34,9 @@
       jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/androidx.datastore/datastore-core/1.0.0/91b04fb657294e2906d95dce6a9e5a851f6125c1/datastore-core-1.0.0.jar"
       resolved="androidx.datastore:datastore-core:1.0.0"/>
   <library
-      name="io.flutter:flutter_embedding_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a@jar"
-      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/flutter_embedding_release/1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a/97941f93b7cbdac7a4963fc443120d849cbf264c/flutter_embedding_release-1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a.jar"
-      resolved="io.flutter:flutter_embedding_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a"/>
+      name="io.flutter:flutter_embedding_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d@jar"
+      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/flutter_embedding_release/1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d/df73e65ae682c635df1524a146b7d0dcb41f1460/flutter_embedding_release-1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d.jar"
+      resolved="io.flutter:flutter_embedding_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d"/>
   <library
       name="androidx.preference:preference:1.2.1@aar"
       jars="/Users/luccas/.gradle/caches/transforms-3/1135db4005ffd9c15261d9709305ad99/transformed/preference-1.2.1/jars/classes.jar"

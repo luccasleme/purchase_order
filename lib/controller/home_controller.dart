@@ -7,6 +7,7 @@ import 'package:purchase_order/model/task_model.dart';
 import 'package:purchase_order/model/user_model.dart';
 import 'package:purchase_order/view/pages/login.dart';
 import 'package:purchase_order/view/pages/task.dart';
+import 'package:purchase_order/view/widgets/common/alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeController extends GetxController {
@@ -71,7 +72,7 @@ class HomeController extends GetxController {
           }
           if (order.status == 'Pending Billing/Partially Received') {
             pBpR.add(order);
-            print(order.status);
+            
           }
           loading.value = false;
           refresh();
@@ -79,7 +80,7 @@ class HomeController extends GetxController {
         loading.value = false;
         refresh();
       },
-      onError: (e) => print("Error getting document: $e"),
+      onError: (e) => Alert.error(e),
     );
     loading.value = false;
 

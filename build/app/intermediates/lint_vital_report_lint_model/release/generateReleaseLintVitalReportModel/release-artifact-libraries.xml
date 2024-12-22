@@ -23,9 +23,9 @@
       jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.8.22/4dabb8248310d833bb6a8b516024a91fd3d275c/kotlin-stdlib-jdk7-1.8.22.jar"
       resolved="org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22"/>
   <library
-      name="io.flutter:flutter_embedding_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a@jar"
-      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/flutter_embedding_release/1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a/97941f93b7cbdac7a4963fc443120d849cbf264c/flutter_embedding_release-1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a.jar"
-      resolved="io.flutter:flutter_embedding_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a"/>
+      name="io.flutter:flutter_embedding_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d@jar"
+      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/flutter_embedding_release/1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d/df73e65ae682c635df1524a146b7d0dcb41f1460/flutter_embedding_release-1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d.jar"
+      resolved="io.flutter:flutter_embedding_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d"/>
   <library
       name="androidx.fragment:fragment:1.7.1@aar"
       jars="/Users/luccas/.gradle/caches/transforms-3/3eed8f45400a6985c262dc6de612eb4a/transformed/fragment-1.7.1/jars/classes.jar"
@@ -323,17 +323,17 @@
       jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.8.22/b25c86d47d6b962b9cf0f8c3f320c8a10eea3dd1/kotlin-stdlib-jdk8-1.8.22.jar"
       resolved="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22"/>
   <library
-      name="io.flutter:armeabi_v7a_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a@jar"
-      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/armeabi_v7a_release/1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a/31b7885efff482cd47d645d8931cd73abd8f1800/armeabi_v7a_release-1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a.jar"
-      resolved="io.flutter:armeabi_v7a_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a"/>
+      name="io.flutter:armeabi_v7a_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d@jar"
+      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/armeabi_v7a_release/1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d/ab7ef4b361c85d523e9c6afb46c2ac2ed64e4b58/armeabi_v7a_release-1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d.jar"
+      resolved="io.flutter:armeabi_v7a_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d"/>
   <library
-      name="io.flutter:arm64_v8a_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a@jar"
-      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/arm64_v8a_release/1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a/40f0ce1d3becf16236a114f019d3f28c6d239596/arm64_v8a_release-1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a.jar"
-      resolved="io.flutter:arm64_v8a_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a"/>
+      name="io.flutter:arm64_v8a_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d@jar"
+      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/arm64_v8a_release/1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d/b319b608eeb5cb0df717ff54ab0a5d74221d3bd6/arm64_v8a_release-1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d.jar"
+      resolved="io.flutter:arm64_v8a_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d"/>
   <library
-      name="io.flutter:x86_64_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a@jar"
-      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/x86_64_release/1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a/c32fd7263dfb4d3ec0fb32621dcc0359202da1ac/x86_64_release-1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a.jar"
-      resolved="io.flutter:x86_64_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a"/>
+      name="io.flutter:x86_64_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d@jar"
+      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/x86_64_release/1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d/13699a09c1d6e9292d615365674ef0967ad9d261/x86_64_release-1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d.jar"
+      resolved="io.flutter:x86_64_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d"/>
   <library
       name="org.jetbrains:annotations:23.0.0@jar"
       jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/23.0.0/8cc20c07506ec18e0834947b84a864bfc094484e/annotations-23.0.0.jar"

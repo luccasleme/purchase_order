@@ -13,9 +13,9 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="io.flutter:flutter_embedding_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a@jar"
-      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/flutter_embedding_release/1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a/97941f93b7cbdac7a4963fc443120d849cbf264c/flutter_embedding_release-1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a.jar"
-      resolved="io.flutter:flutter_embedding_release:1.0.0-83bacfc52569459a4a654727cad2546820cb0d6a"/>
+      name="io.flutter:flutter_embedding_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d@jar"
+      jars="/Users/luccas/.gradle/caches/modules-2/files-2.1/io.flutter/flutter_embedding_release/1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d/df73e65ae682c635df1524a146b7d0dcb41f1460/flutter_embedding_release-1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d.jar"
+      resolved="io.flutter:flutter_embedding_release:1.0.0-cb4b5fff73850b2e42bd4de7cb9a4310a78ac40d"/>
   <library
       name="androidx.activity:activity:1.8.1@aar"
       jars="/Users/luccas/.gradle/caches/transforms-3/bc5cdcb0760a84532ffbf29f6f94c116/transformed/jetified-activity-1.8.1/jars/classes.jar"

@@ -1,4 +1,4 @@
-#Fri Dec 20 05:27:38 BRT 2024
+#Sun Dec 22 06:00:51 BRT 2024
 base.0=/Users/luccas/Developer/projects/purchase_order/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

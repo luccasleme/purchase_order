@@ -29,7 +29,6 @@ class TaskController extends GetxController {
   List<OrderModel>? search(String text, List<OrderModel> list) {
     text = text.toLowerCase();
     if (text == '') {
-      print('entrou');
       refresh();
       return null;
     } else {
