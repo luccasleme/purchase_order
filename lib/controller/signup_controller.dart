@@ -47,33 +47,35 @@ class SignUpController extends GetxController {
             db.collection("users").add(newUser);
           } on FirebaseException catch (e) {
             errorMessage.value = e.message ?? 'Unknown error.';
-            showError();
+
+            Alert.error(errorMessage.value);
           } catch (e) {
             errorMessage.value = e.toString();
-            showError();
+
+            Alert.error(errorMessage.value);
           }
 
           prefs.setString('username', email);
           Get.off(() => HomePage());
-          Alert.aproved(
-            title: 'Success:',
-            message: 'Account created successfully',
-          );
+          Alert.success('Account created successfully');
         });
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           errorMessage.value = 'The password provided is too weak.';
-          showError();
+
+          Alert.error(errorMessage.value);
         } else if (e.code == 'email-already-in-use') {
           errorMessage.value = 'The account already exists for that email.';
-          showError();
+
+          Alert.error(errorMessage.value);
         }
       } catch (e) {
         errorMessage.value = 'Unknown error.';
-        showError();
+
+        Alert.error(errorMessage.value);
       }
     } else {
-      showError();
+      Alert.error(errorMessage.value);
     }
   }
 
@@ -91,10 +93,5 @@ class SignUpController extends GetxController {
       return false;
     }
     return true;
-  }
-
-  showError() {
-    return Get.showSnackbar(
-        Alert.error(title: 'Error:', message: errorMessage.value));
   }
 }

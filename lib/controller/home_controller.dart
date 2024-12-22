@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomeController extends GetxController {
   Rx<UserModel>? user;
   List<OrderModel> homeList = <OrderModel>[].obs;
+  List<List<OrderModel>> searchHomeList = <List<OrderModel>>[].obs;
   List<TaskModel> taskList = <TaskModel>[].obs;
   List<String> quantity = <String>[].obs;
   List<OrderModel> open = [];
@@ -30,6 +31,7 @@ class HomeController extends GetxController {
   void onInit() async {
     setOrderByStatusList();
     getOrders();
+
     prefs = await SharedPreferences.getInstance();
     super.onInit();
   }
@@ -80,16 +82,23 @@ class HomeController extends GetxController {
       onError: (e) => print("Error getting document: $e"),
     );
     loading.value = false;
+
     refresh();
   }
 
   setOrderByStatusList() {
     ordersByStatus.add(open);
+    searchHomeList.add(open);
     ordersByStatus.add(closed);
+    searchHomeList.add(closed);
     ordersByStatus.add(fullyBilled);
+    searchHomeList.add(fullyBilled);
     ordersByStatus.add(pendingBill);
+    searchHomeList.add(pendingBill);
     ordersByStatus.add(partiallyReceived);
+    searchHomeList.add(partiallyReceived);
     ordersByStatus.add(pBpR);
+    searchHomeList.add(pBpR);
   }
 
 //LOGOUT

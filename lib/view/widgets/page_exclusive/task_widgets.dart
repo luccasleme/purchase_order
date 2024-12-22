@@ -1,51 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
+import 'package:purchase_order/controller/home_controller.dart';
+import 'package:purchase_order/controller/task_controller.dart';
 import 'package:purchase_order/utils/size.dart';
 
-class TaskDrawer extends StatelessWidget {
-  const TaskDrawer({super.key});
+class TaskSearch extends StatelessWidget {
+  final int index;
+  final TaskController taskController = Get.find();
+  final HomeController homeController = Get.find();
+  TaskSearch({required this.index, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        height: Screen.height(context) / 3,
-        width: Screen.width(context),
-        decoration: BoxDecoration(
-            color: const Color.fromRGBO(124, 137, 163, 1),
-            borderRadius: BorderRadius.circular(25)),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Container(
-            margin: EdgeInsets.only(
-              bottom: Screen.height(context) / 10,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: Colors.grey.shade100,
-            ),
-            child: const TextField(
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                label: Padding(
-                  padding: EdgeInsets.only(
-                    left: 8.0,
-                  ),
-                  child: Text('Justifique para reprovar'),
-                ),
-                border: InputBorder.none,
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-              ),
-            ),
-          ),
+    return Container(
+      margin: EdgeInsets.only(right: 8, top: 8, bottom: 8),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(200)),
+      width: Screen.width(context) / 3,
+      child: TextField(
+        controller: taskController.searchController,
+        onChanged: (value) {
+          homeController.searchHomeList[index] =
+              homeController.ordersByStatus[index];
+          homeController.searchHomeList[index] = taskController.search(
+                  taskController.searchController.text,
+                  homeController.searchHomeList[index]) ??
+              homeController.ordersByStatus[index];
+        },
+        decoration: InputDecoration(
+          label: Text('Search'),
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.only(left: 13, bottom: 13),
+          suffixIcon: Icon(Icons.search),
         ),
       ),
-    ).animate().slide(
-        begin: const Offset(0, 0.3),
-        duration: const Duration(milliseconds: 250),
-        delay: Duration.zero);
+    );
   }
 }

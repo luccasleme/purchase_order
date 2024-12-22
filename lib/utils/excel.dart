@@ -1,10 +1,8 @@
 import 'package:excel/excel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:purchase_order/controller/order_model.dart';
 import 'package:purchase_order/utils/database.dart';
-import 'package:purchase_order/view/widgets/common/alert.dart';
 
 Future<Excel> importExcelFile() async {
   ByteData data = await rootBundle.load("assets/excel.xlsx");
@@ -72,10 +70,11 @@ void parseExcelToOrderModel() async {
       'ordersById': [map]
     });
   } on FirebaseException catch (e) {
-    Get.showSnackbar(
-      Alert.error(title: 'Error', message: e.message ?? 'Erro desconhecido.'),
-    );
+    print(e.message);
+    // Get.showSnackbar(
+    //   Alert.error(title: 'Error', message: e.message ?? 'Erro desconhecido.'),
+    // );
   } catch (e) {
-    Alert.error(title: 'Error', message: e.toString());
+    // Alert.error(title: 'Error', message: e.toString());
   }
 }

@@ -75,11 +75,11 @@ class HomePage extends StatelessWidget {
                       'Pending Billing/\nPartially Received',
                     ];
                     final iconList = <IconData>[
-                      Icons.mail,
+                      Icons.mark_email_unread,
                       Icons.close,
-                      Icons.money,
-                      Icons.pending,
-                      Icons.receipt,
+                      Icons.done,
+                      Icons.wallet,
+                      Icons.payments,
                       Icons.receipt_long
                     ];
 
@@ -102,25 +102,22 @@ class HomePage extends StatelessWidget {
                                 ),
                               )),
                         ),
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Icon(
-                                iconList[index],
-                                size: Screen.width(context) / 5,
-                                color: Color.fromRGBO(0, 0, 100, 1),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              iconList[index],
+                              size: Screen.width(context) / 5,
+                              color: Color.fromRGBO(0, 0, 100, 1),
+                            ),
+                            FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: Text(
+                                titleList[index],
+                                textAlign: TextAlign.center,
                               ),
-                              FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  titleList[index],
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     );
