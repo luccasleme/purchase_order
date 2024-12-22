@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:purchase_order/controller/home_controller.dart';
 import 'package:purchase_order/controller/login_controller.dart';
 import 'package:purchase_order/controller/task_controller.dart';
-import 'package:purchase_order/helpers/size.dart';
+import 'package:purchase_order/utils/size.dart';
 
 class HomePage extends StatelessWidget {
   final LoginController loginController = Get.find();

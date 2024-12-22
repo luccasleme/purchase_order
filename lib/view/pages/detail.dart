@@ -3,8 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/detail_controller.dart';
 import 'package:purchase_order/controller/home_controller.dart';
-import 'package:purchase_order/helpers/date_formater.dart';
-import 'package:purchase_order/helpers/size.dart';
+import 'package:purchase_order/utils/date_formater.dart';
+import 'package:purchase_order/utils/size.dart';
 import 'package:purchase_order/view/widgets/common/nothing.dart';
 import 'package:purchase_order/view/widgets/page_exclusive/detail_widgets.dart';
 

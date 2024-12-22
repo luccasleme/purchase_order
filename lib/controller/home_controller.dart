@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/order_model.dart';
-import 'package:purchase_order/helpers/database.dart';
+import 'package:purchase_order/utils/database.dart';
 import 'package:purchase_order/model/task_model.dart';
 import 'package:purchase_order/model/user_model.dart';
 import 'package:purchase_order/view/pages/login.dart';

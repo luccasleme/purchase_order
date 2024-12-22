@@ -38,40 +38,41 @@ class LoginController extends GetxController {
     }
 
     try {
-      auth.signInWithEmailAndPassword(
+      await auth.signInWithEmailAndPassword(
           email: user.trimLeft().trimRight(), password: password);
-      errorMessage.value = '';
       isChecked.value
           ? {
               prefs.setBool('remember', isChecked.value),
               prefs.setString('username', user),
               prefs.setString('password', password),
-              Get.showSnackbar(
-                Alert.aproved(
-                  title: 'Sucesso:',
-                  message: 'Logged in successfully.',
-                ),
-              ),
-              Get.off(() => HomePage()),
+              Get.showSnackbar(Alert.aproved(
+                  title: 'Sucesso:', message: 'Logged in successfully.')),
             }
           : {
-              prefs.setString('username', user),
               Get.showSnackbar(
                 Alert.aproved(
-                  title: 'Sucesso:',
+                  title: 'Sucess:',
                   message: 'Logged in successfully.',
                 ),
               ),
-              Get.off(() => HomePage()),
               getUser(user),
             };
-    } on FirebaseException catch (e) {
+      Get.off(() => HomePage());
+      errorMessage.value = '';
+    } on FirebaseAuthException catch (e) {
       errorMessage.value = e.message ?? 'Unknown error.';
+      Get.showSnackbar(
+        Alert.error(title: 'Erro:', message: errorMessage.value),
+      );
     } catch (e) {
       e.toString().startsWith(
               'ClientException with SocketException: Failed host lookup:')
           ? errorMessage.value = 'Sem acesso à internet.'
           : errorMessage.value = 'Unknown error.';
+      Alert.error(
+        title: 'Erro:',
+        message: errorMessage.value,
+      );
     }
   }
 
