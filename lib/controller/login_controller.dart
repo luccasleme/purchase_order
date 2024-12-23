@@ -7,6 +7,7 @@ import 'package:purchase_order/view/widgets/common/alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
+  late Rx<bool> showSignUp;
   Rx<UserModel> user = UserModel(name: '', email: '', userId: '').obs;
   final auth = FirebaseAuth.instance;
   final userController = TextEditingController();
@@ -18,6 +19,7 @@ class LoginController extends GetxController {
 
   @override
   onInit() async {
+    showSignUp = false.obs;
     prefs = await SharedPreferences.getInstance();
     errorMessage.value = '';
     rememberLogin();
@@ -104,5 +106,11 @@ class LoginController extends GetxController {
     }
 
     return true;
+  }
+
+  toggleSignUp() {
+    showSignUp.value = !showSignUp.value;
+    print(showSignUp.value);
+    refresh();
   }
 }
