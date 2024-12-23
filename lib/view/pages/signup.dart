@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/controller/login_controller.dart';
 import 'package:purchase_order/controller/signup_controller.dart';
+import 'package:purchase_order/utils/size.dart';
 import 'package:purchase_order/view/pages/login.dart';
 import 'package:purchase_order/view/widgets/common/bottombanner.dart';
 import 'package:purchase_order/view/widgets/page_exclusive/login_widgets.dart';
@@ -22,79 +23,81 @@ class SignUpPage extends StatelessWidget {
           ? LoginPage()
           : Scaffold(
               backgroundColor: Colors.white,
-              appBar: AppBar(
-                backgroundColor: Colors.transparent,
-              ),
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const LoginLogo(),
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      children: [
-                        SignUpTextfield(
-                          label: 'Name',
-                          controller: signController.nameController,
-                        ),
-                        SignUpTextfield(
-                          label: 'Email',
-                          controller: signController.userController,
-                        ),
-                        SignUpTextfield(
-                          label: 'Password',
-                          controller: signController.passwordController,
-                          isPass: signController.isPass.value,
-                          hasSuffix: true,
-                        ),
-                        SignUpTextfield(
-                          label: 'Confirm Password',
-                          controller: signController.passwordConfirmController,
-                          isPass: signController.isConfirmPass.value,
-                          isConfirm: true,
-                          hasSuffix: true,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 24),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Gap(0),
-                              TextButton(
-                                onPressed: () {
-                                  loginController.toggleSignUp();
-                                },
-                                child: Text(
-                                  'Already have an account.',
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(0, 0, 100, 1)),
-                                ),
-                              )
-                            ],
+              body: SingleChildScrollView(
+                child: SizedBox(
+                  height: Screen.height(context),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Spacer(),
+                      const LoginLogo(),
+                      Column(
+                        children: [
+                          SignUpTextfield(
+                            label: 'Name',
+                            controller: signController.nameController,
                           ),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            backgroundColor:
-                                const Color.fromRGBO(0, 45, 114, 1),
-                            foregroundColor: Colors.white,
+                          SignUpTextfield(
+                            label: 'Email',
+                            controller: signController.userController,
                           ),
-                          onPressed: () {
-                            signController.signUp(
-                              signController.nameController.text,
-                              signController.userController.text,
-                              signController.passwordController.text,
-                              signController.passwordConfirmController.text,
-                            );
-                          },
-                          child: const Text('Sign Up'),
-                        ),
-                      ],
-                    ),
+                          SignUpTextfield(
+                            label: 'Password',
+                            controller: signController.passwordController,
+                            isPass: signController.isPass.value,
+                            hasSuffix: true,
+                          ),
+                          SignUpTextfield(
+                            label: 'Confirm Password',
+                            controller:
+                                signController.passwordConfirmController,
+                            isPass: signController.isConfirmPass.value,
+                            isConfirm: true,
+                            hasSuffix: true,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 24),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Gap(0),
+                                TextButton(
+                                  onPressed: () {
+                                    loginController.toggleSignUp();
+                                  },
+                                  child: Text(
+                                    'Already have an account.',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(0, 0, 100, 1)),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor:
+                                  const Color.fromRGBO(0, 45, 114, 1),
+                              foregroundColor: Colors.white,
+                            ),
+                            onPressed: () {
+                              signController.signUp(
+                                signController.nameController.text,
+                                signController.userController.text,
+                                signController.passwordController.text,
+                                signController.passwordConfirmController.text,
+                              );
+                            },
+                            child: const Text('Sign Up'),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      BottomBanner(),
+                    ],
                   ),
-                  BottomBanner(),
-                ],
+                ),
               ),
             ),
     );
