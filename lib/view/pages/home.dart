@@ -32,7 +32,13 @@ class HomePage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('Welcome, $name!'),
+            title: FittedBox(
+              fit: BoxFit.fitHeight,
+              child: Text(
+                'Welcome, $name!',
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 24),
+              ),
+            ),
             iconTheme: const IconThemeData(color: Colors.white),
             actions: [
               IconButton(

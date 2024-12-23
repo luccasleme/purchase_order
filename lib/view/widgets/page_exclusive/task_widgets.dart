@@ -12,27 +12,30 @@ class TaskSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 8, top: 8, bottom: 8),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(200)),
-      width: Screen.width(context) / 3,
-      child: TextField(
-        controller: taskController.searchController,
-        onChanged: (value) {
-          homeController.searchHomeList[index] =
-              homeController.ordersByStatus[index];
-          homeController.searchHomeList[index] = taskController.search(
-                  taskController.searchController.text,
-                  homeController.searchHomeList[index]) ??
-              homeController.ordersByStatus[index];
-        },
-        decoration: InputDecoration(
-          label: Text('Search'),
-          floatingLabelBehavior: FloatingLabelBehavior.never,
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.only(left: 13, bottom: 13),
-          suffixIcon: Icon(Icons.search),
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(200)),
+        width: Screen.width(context) / 1.45,
+        height: Screen.height(context) / 22,
+        child: TextField(
+          controller: taskController.searchController,
+          onChanged: (value) {
+            homeController.searchHomeList[index] =
+                homeController.ordersByStatus[index];
+            homeController.searchHomeList[index] = taskController.search(
+                    taskController.searchController.text,
+                    homeController.searchHomeList[index]) ??
+                homeController.ordersByStatus[index];
+          },
+          decoration: InputDecoration(
+            label: Text('Search'),
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(left: 13, bottom: 13),
+            suffixIcon: Icon(Icons.search),
+          ),
         ),
       ),
     );
