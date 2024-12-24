@@ -19,7 +19,6 @@ class TaskListPage extends StatelessWidget {
       builder: (_) {
         final keys = homeController.searchHomeList.keys.toList();
         keys.sort((a, b) => a.length.compareTo(b.length));
-
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -63,6 +62,7 @@ class TaskListPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final orderList = homeController.searchHomeList[keys[i]];
                     final order = orderList[index];
+                    print(homeController.searchHomeList[keys[i]]);
                     return Column(
                       children: [
                         Container(
