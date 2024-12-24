@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchase_order/model/user_model.dart';
 import 'package:purchase_order/view/pages/home.dart';
+import 'package:purchase_order/view/pages/login.dart';
 import 'package:purchase_order/view/widgets/common/alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,13 +19,34 @@ class LoginController extends GetxController {
   var isChecked = false.obs;
   Rx<bool> isPass = true.obs;
   late SharedPreferences prefs;
+  late Rx<bool> loggedIn = false.obs;
+  Rx<bool> isLoading = false.obs;
 
   @override
   onInit() async {
+    isLoading.value = true;
     showSignUp = false.obs;
-    prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance().then((value) {
+      (value.getString('username') != null &&
+              value.getString('password') != null)
+          ? {
+              loggedIn.value = true,
+              logIn(value.getString('username') ?? '',
+                  value.getString('password') ?? ''),
+              refresh(),
+            }
+          : {
+              loggedIn.value = false,
+              Timer(Duration(seconds: 1), () => Get.offAll(() => LoginPage()))
+            };
+
+      return value;
+    });
     errorMessage.value = '';
-    rememberLogin();
+
+    //rememberLogin();
+    isLoading.value = false;
+    refresh();
     super.onInit();
   }
 
@@ -110,7 +134,6 @@ class LoginController extends GetxController {
 
   toggleSignUp() {
     showSignUp.value = !showSignUp.value;
-    print(showSignUp.value);
     refresh();
   }
 }
