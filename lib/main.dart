@@ -6,8 +6,8 @@ import 'package:get/instance_manager.dart';
 import 'package:purchase_order/controller/login_controller.dart';
 import 'package:purchase_order/utils/database.dart';
 import 'package:purchase_order/utils/theme.dart';
-import 'package:purchase_order/view/pages/login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:purchase_order/view/pages/splash.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -31,7 +31,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: LoginPage(),
+      home: SplashScreen(),
       theme: myTheme,
     );
   }

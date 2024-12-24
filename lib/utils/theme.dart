@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final ThemeData myTheme = ThemeData(
+  primaryColor: Color.fromRGBO(0, 45, 114, 1),
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Color.fromRGBO(0, 45, 114, 1),
     selectionColor: Color.fromRGBO(3, 189, 205, 1),
