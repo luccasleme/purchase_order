@@ -4,6 +4,7 @@ import 'package:purchase_order/controller/home_controller.dart';
 import 'package:purchase_order/controller/login_controller.dart';
 import 'package:purchase_order/controller/task_controller.dart';
 import 'package:purchase_order/utils/size.dart';
+import 'package:purchase_order/utils/text_formater.dart';
 
 class HomePage extends StatelessWidget {
   final LoginController loginController = Get.find();
@@ -18,12 +19,8 @@ class HomePage extends StatelessWidget {
       builder: (_) {
         String name = loginController.user.value.name;
         bool checker() {
-          if (homeController.ordersByStatus[0].isEmpty ||
-              homeController.ordersByStatus[1].isEmpty ||
-              homeController.ordersByStatus[2].isEmpty ||
-              homeController.ordersByStatus[3].isEmpty ||
-              homeController.ordersByStatus[4].isEmpty ||
-              homeController.ordersByStatus[5].isEmpty) {
+          if (homeController.ordersByStatus.keys.isEmpty ||
+              homeController.ordersByStatus.keys.length < 6) {
             return true;
           } else {
             return false;
@@ -70,43 +67,43 @@ class HomePage extends StatelessWidget {
                   ),
                   //padding: EdgeInsets.all(16),
                   shrinkWrap: true,
-                  itemCount: 6,
+                  itemCount: homeController.ordersByStatus.keys.length,
                   itemBuilder: (context, index) {
-                    final titleList = <String>[
-                      'Open',
-                      'Closed',
-                      'Fully Billed',
-                      'Pending Bill',
-                      'Partially Received',
-                      'Pending Billing/\nPartially Received',
-                    ];
+                    final title = homeController.ordersByStatus.keys.toList();
+                    title.sort((a, b) => a.length.compareTo(b.length));
+                    final badges =
+                        (homeController.ordersByStatus[title[index]] ?? [])
+                            .length
+                            .toString();
                     final iconList = <IconData>[
                       Icons.mark_email_unread,
                       Icons.close,
+                      Icons.error,
                       Icons.done,
                       Icons.wallet,
+                      Icons.receipt,
                       Icons.payments,
-                      Icons.receipt_long
+                      Icons.receipt_long,
                     ];
 
                     return InkWell(
                       onTap: () {
-                        homeController.toTaskList(titleList[index], index);
+                        homeController.toTaskList(title[index], index);
                       },
                       child: GridTile(
                         header: Align(
                           alignment: Alignment.topRight,
                           child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                homeController.ordersByStatus[index].length
-                                    .toString(),
-                                style: TextStyle(
-                                  color: Colors.lightBlue,
-                                  fontSize: Screen.width(context) / 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )),
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              badges,
+                              style: TextStyle(
+                                color: Colors.lightBlue,
+                                fontSize: Screen.width(context) / 30,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -119,7 +116,7 @@ class HomePage extends StatelessWidget {
                             FittedBox(
                               fit: BoxFit.fitHeight,
                               child: Text(
-                                titleList[index],
+                                textFormater(title[index]),
                                 textAlign: TextAlign.center,
                               ),
                             ),

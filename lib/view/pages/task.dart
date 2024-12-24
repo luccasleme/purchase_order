@@ -15,17 +15,18 @@ class TaskListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<TaskController>(
+    return GetBuilder<HomeController>(
       builder: (_) {
+        final keys = homeController.searchHomeList.keys.toList();
+        keys.sort((a, b) => a.length.compareTo(b.length));
+
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
             leading: IconButton(
                 onPressed: () {
-                  homeController.searchHomeList[i] =
-                      homeController.ordersByStatus[i];
+                  homeController.resetSearch();
                   taskController.searchController.text = '';
-
                   Get.back();
                 },
                 icon: Icon(Icons.arrow_back_ios)),
@@ -58,9 +59,9 @@ class TaskListPage extends StatelessWidget {
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: homeController.searchHomeList[i].length,
+                  itemCount: homeController.searchHomeList[keys[i]].length,
                   itemBuilder: (context, index) {
-                    final orderList = homeController.searchHomeList[i];
+                    final orderList = homeController.searchHomeList[keys[i]];
                     final order = orderList[index];
                     return Column(
                       children: [

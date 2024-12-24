@@ -5,8 +5,6 @@ import 'package:purchase_order/controller/detail_controller.dart';
 import 'package:purchase_order/controller/home_controller.dart';
 import 'package:purchase_order/utils/date_formater.dart';
 import 'package:purchase_order/utils/size.dart';
-import 'package:purchase_order/view/widgets/common/nothing.dart';
-import 'package:purchase_order/view/widgets/page_exclusive/detail_widgets.dart';
 
 class TaskDetail extends StatelessWidget {
   final int i;
@@ -20,7 +18,9 @@ class TaskDetail extends StatelessWidget {
     return GetBuilder<DetailController>(
       init: controller,
       builder: (_) {
-        final orderList = homeController.ordersByStatus[i];
+        final keys = homeController.searchHomeList.keys.toList();
+        keys.sort((a, b) => a.length.compareTo(b.length));
+        final orderList = homeController.searchHomeList[keys[i]] ?? [];
         final order = orderList[index];
         statusFormat() {
           if (order.status.contains('/')) {
@@ -42,99 +42,92 @@ class TaskDetail extends StatelessWidget {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Order status: ',
-                                      style: TextStyle(
-                                          fontSize: Screen.width(context) / 25,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      statusFormat(),
-                                      style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: Screen.width(context) / 25,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
+                                Text(
+                                  'Order status: ',
+                                  style: TextStyle(
+                                      fontSize: Screen.width(context) / 25,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                Text(dateFormater(order.date),
-                                    textAlign: TextAlign.center),
-                              ],
-                            ),
-                            Gap(4),
-                            Row(
-                              children: [
-                                Text('Qty ordered: ',
-                                    style: TextStyle(
-                                        fontSize: Screen.width(context) / 25,
-                                        fontWeight: FontWeight.bold)),
-                                Text('${order.quantityOrdered}.',
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: Screen.width(context) / 25,
-                                        fontWeight: FontWeight.bold))
-                              ],
-                            ),
-                            Text(
-                              '\n\nVendor Name: ${order.vendorName}.\nVendor Entity ID: ${order.vendorEntityId}.\nDocument Number: ${order.documentNumber}.',
-                              style: TextStyle(
-                                  fontSize: Screen.width(context) / 25),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
                                 Text(
-                                    '\n\n\nQty Billed: ${order.quantityBilled.toString()}.'),
-                                Text(
-                                    '\n\n\nQty Received: ${order.quantityReceived.toString()}.'),
+                                  statusFormat(),
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: Screen.width(context) / 25,
+                                      fontWeight: FontWeight.bold),
+                                )
                               ],
                             ),
-                            Gap(Screen.height(context) / 3),
-                            !(order.status == 'Closed')
-                                ? Center(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.red,
-                                          foregroundColor: Colors.white),
-                                      onPressed: () {
-                                        controller.deny(order);
-                                      },
-                                      child: Text('Close'),
-                                    ),
-                                  )
-                                : Center(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.green,
-                                          foregroundColor: Colors.white),
-                                      onPressed: () {
-                                        controller.open(order);
-                                      },
-                                      child: Text('Open'),
-                                    ),
-                                  )
+                            Text(dateFormater(order.date),
+                                textAlign: TextAlign.center),
                           ],
                         ),
-                      ),
+                        Gap(4),
+                        Row(
+                          children: [
+                            Text('Qty ordered: ',
+                                style: TextStyle(
+                                    fontSize: Screen.width(context) / 25,
+                                    fontWeight: FontWeight.bold)),
+                            Text('${order.quantityOrdered}.',
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: Screen.width(context) / 25,
+                                    fontWeight: FontWeight.bold))
+                          ],
+                        ),
+                        Text(
+                          '\n\nVendor Name: ${order.vendorName}.\nVendor Entity ID: ${order.vendorEntityId}.\nDocument Number: ${order.documentNumber}.',
+                          style:
+                              TextStyle(fontSize: Screen.width(context) / 25),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                                '\n\n\nQty Billed: ${order.quantityBilled.toString()}.'),
+                            Text(
+                                '\n\n\nQty Received: ${order.quantityReceived.toString()}.'),
+                          ],
+                        ),
+                        Gap(Screen.height(context) / 3),
+                        !(order.status == 'Closed')
+                            ? Center(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white),
+                                  onPressed: () {
+                                    controller.deny(order);
+                                  },
+                                  child: Text('Close'),
+                                ),
+                              )
+                            : Center(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      foregroundColor: Colors.white),
+                                  onPressed: () {
+                                    controller.open(order);
+                                  },
+                                  child: Text('Open'),
+                                ),
+                              )
+                      ],
                     ),
-                    controller.reproving.value
-                        ? const DetailDrawer()
-                        : const Nothing(),
-                  ],
+                  ),
                 ),
         );
       },

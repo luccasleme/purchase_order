@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:purchase_order/controller/order_model.dart';
+import 'package:purchase_order/model/order_model.dart';
 import 'package:purchase_order/utils/database.dart';
-import 'package:purchase_order/model/task_model.dart';
 import 'package:purchase_order/model/user_model.dart';
 import 'package:purchase_order/view/pages/login.dart';
 import 'package:purchase_order/view/pages/task.dart';
@@ -11,18 +9,12 @@ import 'package:purchase_order/view/widgets/common/alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeController extends GetxController {
+  late Map<String, List<OrderModel>> ordersByStatus;
+  late RxMap<String, dynamic> searchHomeList;
+
   Rx<UserModel>? user;
   List<OrderModel> homeList = <OrderModel>[].obs;
-  List<List<OrderModel>> searchHomeList = <List<OrderModel>>[].obs;
-  List<TaskModel> taskList = <TaskModel>[].obs;
   List<String> quantity = <String>[].obs;
-  List<OrderModel> open = [];
-  List<OrderModel> closed = [];
-  List<OrderModel> fullyBilled = [];
-  List<OrderModel> pendingBill = [];
-  List<OrderModel> partiallyReceived = [];
-  List<OrderModel> pBpR = [];
-  List<List<OrderModel>> ordersByStatus = [];
   FirebaseAuth auth = FirebaseAuth.instance;
 
   Rx<bool> loading = false.obs;
@@ -30,76 +22,43 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
-    setOrderByStatusList();
+    ordersByStatus = {};
+    searchHomeList = <String, dynamic>{}.obs;
     getOrders();
-
-    prefs = await SharedPreferences.getInstance();
+    setPrefs();
     super.onInit();
   }
 
-//PEGA OS PROCESSOS
+//GETS ALL THE ORDERS AND ORGANIZES THEM
 
-  getOrders() async {
-    final docAllOrders = db.collection("orders").doc("allOrders");
-    docAllOrders.get().then(
-      (DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
+  Future<Map<String, dynamic>> getOrders() async {
+    try {
+      loading.value = true;
+      final doc = await db.collection("orders").doc("allOrders").get();
+      final data = doc.data() as Map<String, dynamic>;
 
-        for (var i = 0; i < data['allOrders'].length; i++) {
-          homeList.add(
-            OrderModel.fromMap(data['allOrders'][i]),
-          );
-        }
+      for (var i = 0; i < data['allOrders'].length; i++) {
+        homeList.add(
+          OrderModel.fromMap(data['allOrders'][i]),
+        );
+      }
 
-        for (var order in homeList) {
-          loading.value = true;
-          refresh();
-          if (order.status == 'Open') {
-            open.add(order);
-          }
+      ordersByStatus = groupOrdersByStatus(homeList);
 
-          if (order.status == 'Closed') {
-            closed.add(order);
-          }
-          if (order.status == 'Fully Billed') {
-            fullyBilled.add(order);
-          }
-          if (order.status == 'Pending Bill') {
-            pendingBill.add(order);
-          }
-          if (order.status == 'Partially Received') {
-            partiallyReceived.add(order);
-          }
-          if (order.status == 'Pending Billing/Partially Received') {
-            pBpR.add(order);
-            
-          }
-          loading.value = false;
-          refresh();
-        }
-        loading.value = false;
-        refresh();
-      },
-      onError: (e) => Alert.error(e),
-    );
-    loading.value = false;
+      searchHomeList.value = groupOrdersByStatus(homeList);
 
-    refresh();
+      loading.value = false;
+      refresh();
+      return ordersByStatus;
+    } on FirebaseException catch (e) {
+      Alert.error(e.message ?? 'Unknown Error');
+      return {};
+    }
   }
 
-  setOrderByStatusList() {
-    ordersByStatus.add(open);
-    searchHomeList.add(open);
-    ordersByStatus.add(closed);
-    searchHomeList.add(closed);
-    ordersByStatus.add(fullyBilled);
-    searchHomeList.add(fullyBilled);
-    ordersByStatus.add(pendingBill);
-    searchHomeList.add(pendingBill);
-    ordersByStatus.add(partiallyReceived);
-    searchHomeList.add(partiallyReceived);
-    ordersByStatus.add(pBpR);
-    searchHomeList.add(pBpR);
+  resetSearch() {
+    searchHomeList.value = groupOrdersByStatus(homeList);
+    refresh();
   }
 
 //LOGOUT
@@ -111,17 +70,53 @@ class HomeController extends GetxController {
     toLogin();
   }
 
-//Navegação
+//SIMPLE NAVIGATION
   toTaskList(String title, int i) {
     Get.to(
-      () => TaskListPage(
-        title: title,
-        i: i,
-      ),
+      () => TaskListPage(title: title, i: i),
     );
   }
-}
 
-toLogin() {
-  Get.offAll(() => LoginPage());
+  List<OrderModel>? search(String key, String text, List<OrderModel> list) {
+    text = text.toLowerCase();
+    var newList = <OrderModel>[];
+    if (text == '') {
+      newList = groupOrdersByStatus(homeList)[key] ?? [];
+      refresh();
+      return null;
+    } else {
+      for (var order in list) {
+        String toString = (order.date.toString() +
+                order.documentNumber +
+                order.status +
+                order.quantityBilled.toString() +
+                order.quantityOrdered.toString() +
+                order.quantityReceived.toString() +
+                order.vendorEntityId +
+                order.vendorName)
+            .toLowerCase();
+        toString.contains(text) ? newList.add(order) : null;
+      }
+      searchHomeList[key] = newList;
+      refresh();
+      return newList;
+    }
+  }
+
+  toLogin() => Get.offAll(() => LoginPage());
+
+  //SETS UP SHARED PREFERENCES
+  setPrefs() async => prefs = await SharedPreferences.getInstance();
+
+  //GROUPS A LIST OF ORDERS INTO A MAP OF ORDERS_STATUS : ORDERS
+  Map<String, List<OrderModel>> groupOrdersByStatus(List<OrderModel> orders) {
+    Map<String, List<OrderModel>> groupedOrders = {};
+
+    for (var order in orders) {
+      groupedOrders.putIfAbsent(order.status, () => []);
+      groupedOrders[order.status]!.add(order);
+    }
+
+    return groupedOrders;
+  }
 }
