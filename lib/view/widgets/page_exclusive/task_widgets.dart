@@ -12,6 +12,16 @@ class TaskSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final keys = homeController.searchHomeList.keys.toList();
+    search() {
+      homeController.resetSearch();
+      homeController.search(
+        keys[index],
+        taskController.searchController.text,
+        homeController.searchHomeList[keys[index]],
+      );
+    }
+
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -21,13 +31,8 @@ class TaskSearch extends StatelessWidget {
         height: Screen.height(context) / 22,
         child: TextField(
           controller: taskController.searchController,
-          onChanged: (value) {
-            homeController.searchHomeList[index] =
-                homeController.ordersByStatus[index];
-            homeController.searchHomeList[index] = taskController.search(
-                    taskController.searchController.text,
-                    homeController.searchHomeList[index]) ??
-                homeController.ordersByStatus[index];
+          onChanged: (_) {
+            search();
           },
           decoration: InputDecoration(
             label: Text('Search'),

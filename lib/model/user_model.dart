@@ -17,12 +17,6 @@ class UserModel {
       name: user['name'],
     );
     return userFromMap;
-
-    // docRef.get().then((doc) {
-    //   user = doc.docs[0];
-    // });
-    // print(user);
-    // return user;
   }
 
   static Map<String, dynamic> toMap(UserModel userModel) {

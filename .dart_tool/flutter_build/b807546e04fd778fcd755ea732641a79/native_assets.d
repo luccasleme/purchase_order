@@ -1,0 +1,1 @@
+ /Users/luccas/Developer/projects/purchase_order/.dart_tool/flutter_build/b807546e04fd778fcd755ea732641a79/native_assets.yaml: 
