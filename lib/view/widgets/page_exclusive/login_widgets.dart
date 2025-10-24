@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:purchase_order/controller/login_controller.dart';
-import 'package:purchase_order/utils/size.dart';
+import 'package:purchase_order/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:purchase_order/core/utils/size.dart';
 
-class RememberMeCheckbox extends StatelessWidget {
-  final LoginController controller = Get.find();
-  RememberMeCheckbox({super.key});
+class RememberMeCheckbox extends ConsumerWidget {
+  const RememberMeCheckbox({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return GetBuilder<LoginController>(
-      builder: (_) => Row(
-        children: [
-          const Gap(16),
-          Checkbox(
-            activeColor: const Color.fromRGBO(0, 153, 51, 1),
-            value: controller.isChecked.value,
-            onChanged: (value) {
-              controller.toggleCheckbox(value!);
-            },
-          ),
-          const Text('Remember me')
-        ],
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+    final authNotifier = ref.read(authProvider.notifier);
+
+    return Row(
+      children: [
+        const Gap(16),
+        Checkbox(
+          activeColor: const Color.fromRGBO(0, 153, 51, 1),
+          value: authState.isChecked,
+          onChanged: (value) {
+            authNotifier.toggleCheckbox(value!);
+          },
+        ),
+        const Text('Remember me')
+      ],
     );
   }
 }
@@ -52,42 +52,58 @@ class LoginLogo extends StatelessWidget {
   }
 }
 
-class LoginButton extends StatelessWidget {
-  final LoginController controller = Get.find();
-  LoginButton({super.key});
+class LoginButton extends ConsumerWidget {
+  const LoginButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return GetBuilder<LoginController>(
-      builder: (_) => ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          backgroundColor: const Color.fromRGBO(0, 45, 114, 1),
-          foregroundColor: Colors.white,
-        ),
-        onPressed: () async {
-          controller.logIn(
-            controller.userController.text,
-            controller.passwordController.text,
-          );
-        },
-        child: const Text('Login'),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+    final authNotifier = ref.read(authProvider.notifier);
+
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        backgroundColor: const Color.fromRGBO(0, 45, 114, 1),
+        foregroundColor: Colors.white,
       ),
+      onPressed: authState.isLoading
+          ? null
+          : () async {
+              await authNotifier.signIn();
+            },
+      child: authState.isLoading
+          ? const SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
+              ),
+            )
+          : const Text('Login'),
     );
   }
 }
 
-class LoginTextfield extends StatelessWidget {
+class LoginTextfield extends ConsumerWidget {
   final TextEditingController? controller;
   final bool? hasSuffix;
   final bool? isPass;
   final String? label;
-  final LoginController loginController = Get.find();
-  LoginTextfield(
-      {this.label, this.controller, this.isPass, this.hasSuffix, super.key});
+
+  const LoginTextfield({
+    this.label,
+    this.controller,
+    this.isPass,
+    this.hasSuffix,
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+    final authNotifier = ref.read(authProvider.notifier);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 4, right: 24, left: 24),
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -96,14 +112,20 @@ class LoginTextfield extends StatelessWidget {
           borderRadius: BorderRadius.circular(4)),
       child: TextField(
         controller: controller,
-        obscureText: isPass ?? false,
+        obscureText: (hasSuffix ?? false)
+            ? !authState.isPasswordVisible
+            : (isPass ?? false),
         decoration: InputDecoration(
           suffixIcon: (hasSuffix ?? false)
               ? IconButton(
                   onPressed: () {
-                    loginController.togglePassword();
+                    authNotifier.togglePasswordVisibility();
                   },
-                  icon: Icon(Icons.remove_red_eye),
+                  icon: Icon(
+                    authState.isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
                 )
               : null,
           floatingLabelStyle:

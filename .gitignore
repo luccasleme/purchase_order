@@ -1,0 +1,13 @@
+# Flutter / Dart
+build/
+.dart_tool/
+.packages
+pubspec.lock
+
+# Android / iOS build
+*.apk
+*.aab
+*.so
+*.dill
+*.keystore
+ios/Pods/

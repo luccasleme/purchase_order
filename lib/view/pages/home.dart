@@ -1,133 +1,122 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:purchase_order/controller/home_controller.dart';
-import 'package:purchase_order/controller/login_controller.dart';
-import 'package:purchase_order/controller/task_controller.dart';
-import 'package:purchase_order/utils/size.dart';
-import 'package:purchase_order/utils/text_formater.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:purchase_order/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:purchase_order/features/orders/presentation/providers/orders_notifier.dart';
+import 'package:purchase_order/core/utils/size.dart';
+import 'package:purchase_order/core/utils/text_formatter.dart';
+import 'package:purchase_order/routes/app_routes.dart';
 
-class HomePage extends StatelessWidget {
-  final LoginController loginController = Get.find();
-  final homeController = Get.put(HomeController());
-  final taskController = Get.put(TaskController());
-
-  HomePage({super.key});
+class HomePage extends ConsumerWidget {
+  const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
-      builder: (_) {
-        String name = loginController.user.value.name;
-        bool checker() {
-          if (homeController.ordersByStatus.keys.isEmpty ||
-              homeController.ordersByStatus.keys.length < 6) {
-            return true;
-          } else {
-            return false;
-          }
-        }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+    final authNotifier = ref.read(authProvider.notifier);
+    final ordersState = ref.watch(ordersProvider);
 
-        return Scaffold(
-          appBar: AppBar(
-            title: FittedBox(
-              fit: BoxFit.fitHeight,
-              child: Text(
-                'Welcome, $name!',
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 24),
-              ),
-            ),
-            iconTheme: const IconThemeData(color: Colors.white),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  homeController.logOut();
-                },
-                icon: const Icon(
-                  Icons.logout,
-                  color: Color.fromRGBO(204, 0, 51, 1),
-                ),
-              )
-            ],
+    final userName = authState.user?.name ?? 'User';
+    final isLoading = ordersState.isLoading || ordersState.ordersByStatus.isEmpty;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: FittedBox(
+          fit: BoxFit.fitHeight,
+          child: Text(
+            'Welcome, $userName!',
+            style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 24),
           ),
-          body: checker()
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Color.fromRGBO(0, 54, 114, 1),
-                  ),
-                )
-              : GridView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3, // Number of columns
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await authNotifier.signOut();
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: Color.fromRGBO(204, 0, 51, 1),
+            ),
+          )
+        ],
+      ),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Color.fromRGBO(0, 54, 114, 1),
+              ),
+            )
+          : GridView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: Screen.width(context) / 50,
+                mainAxisSpacing: Screen.width(context) / 50,
+              ),
+              shrinkWrap: true,
+              itemCount: ordersState.ordersByStatus.keys.length,
+              itemBuilder: (context, index) {
+                final title = ordersState.ordersByStatus.keys.toList();
+                title.sort((a, b) => a.length.compareTo(b.length));
+                final badges =
+                    (ordersState.ordersByStatus[title[index]] ?? [])
+                        .length
+                        .toString();
+                final iconList = <IconData>[
+                  Icons.mark_email_unread,
+                  Icons.close,
+                  Icons.error,
+                  Icons.done,
+                  Icons.wallet,
+                  Icons.receipt,
+                  Icons.payments,
+                  Icons.receipt_long,
+                ];
 
-                    crossAxisSpacing:
-                        Screen.width(context) / 50, // Spacing between columns
-                    mainAxisSpacing:
-                        Screen.width(context) / 50, // Spacing between rows
-                  ),
-                  //padding: EdgeInsets.all(16),
-                  shrinkWrap: true,
-                  itemCount: homeController.ordersByStatus.keys.length,
-                  itemBuilder: (context, index) {
-                    final title = homeController.ordersByStatus.keys.toList();
-                    title.sort((a, b) => a.length.compareTo(b.length));
-                    final badges =
-                        (homeController.ordersByStatus[title[index]] ?? [])
-                            .length
-                            .toString();
-                    final iconList = <IconData>[
-                      Icons.mark_email_unread,
-                      Icons.close,
-                      Icons.error,
-                      Icons.done,
-                      Icons.wallet,
-                      Icons.receipt,
-                      Icons.payments,
-                      Icons.receipt_long,
-                    ];
-
-                    return InkWell(
-                      onTap: () {
-                        homeController.toTaskList(title[index], index);
-                      },
-                      child: GridTile(
-                        header: Align(
-                          alignment: Alignment.topRight,
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              badges,
-                              style: TextStyle(
-                                color: Colors.lightBlue,
-                                fontSize: Screen.width(context) / 30,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              iconList[index],
-                              size: Screen.width(context) / 5,
-                              color: Color.fromRGBO(0, 0, 100, 1),
-                            ),
-                            FittedBox(
-                              fit: BoxFit.fitHeight,
-                              child: Text(
-                                textFormater(title[index]),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                return InkWell(
+                  onTap: () {
+                    context.push(
+                      AppRoutes.taskList,
+                      extra: {'title': title[index], 'index': index},
                     );
                   },
-                ),
-        );
-      },
+                  child: GridTile(
+                    header: Align(
+                      alignment: Alignment.topRight,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          badges,
+                          style: TextStyle(
+                            color: Colors.lightBlue,
+                            fontSize: Screen.width(context) / 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          iconList[index],
+                          size: Screen.width(context) / 5,
+                          color: const Color.fromRGBO(0, 0, 100, 1),
+                        ),
+                        FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
+                            textFormater(title[index]),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
     );
   }
 }

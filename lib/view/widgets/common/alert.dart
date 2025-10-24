@@ -1,41 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class Alert {
-  static error(String? message, {String? title}) {
-    return Get.showSnackbar(
-        Alert.errorSnackbar(title: title, message: message));
+  static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
+
+  static void success(String message, {String? title}) {
+    _showSnackBar(message, true, title: title);
   }
 
-  static success(String? message, {String? title}) {
-    return Get.showSnackbar(Alert.successSnackBar(title: title, message));
+  static void error(String message, {String? title}) {
+    _showSnackBar(message, false, title: title);
   }
 
-  static errorSnackbar({String? title, String? message}) {
-    final errorSnackbar = GetSnackBar(
-      backgroundColor: const Color.fromRGBO(204, 0, 51, 1),
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      padding: const EdgeInsets.all(16),
-      snackPosition: SnackPosition.TOP,
-      duration: const Duration(seconds: 2),
-      title: 'Error:',
-      message: message ?? 'Unknown error.',
-      borderRadius: 15,
+  static void _showSnackBar(String message, bool isSuccess, {String? title}) {
+    scaffoldMessengerKey.currentState?.clearSnackBars();
+    scaffoldMessengerKey.currentState?.showSnackBar(
+      SnackBar(
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (title != null)
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+        backgroundColor:
+            isSuccess ? Colors.green : const Color.fromRGBO(204, 0, 51, 1),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.all(16),
+        duration: const Duration(seconds: 2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
     );
-    return errorSnackbar;
-  }
-
-  static successSnackBar(String? message, {String? title}) {
-    final errorSnackbar = GetSnackBar(
-      backgroundColor: Colors.green,
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      padding: const EdgeInsets.all(16),
-      snackPosition: SnackPosition.TOP,
-      duration: const Duration(seconds: 2),
-      title: 'Success:',
-      message: message ?? 'Success',
-      borderRadius: 15,
-    );
-    return errorSnackbar;
   }
 }
