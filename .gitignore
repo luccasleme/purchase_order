@@ -1,13 +1,87 @@
-# Flutter / Dart
-build/
+# Flutter/Dart/Pub related
 .dart_tool/
 .packages
-pubspec.lock
+.pub/
+build/
+flutter_*.png
+flutter_export_environment.sh
 
-# Android / iOS build
+# Generated files
+*.dill
+*.lock
+*.log
+*.tmp
+*.bak
+
+# Flutter generated plugins
+.generated/
+flutter_plugins/
+flutter_plugins_deps.json
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Android
+android/.gradle/
+android/.idea/
+android/local.properties
+android/app/release/
+android/app/debug/
+android/app/profile/
 *.apk
 *.aab
-*.so
-*.dill
 *.keystore
+*.jks
+
+# iOS / Xcode
 ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework/
+ios/build/
+ios/Runner.xcworkspace/
+ios/Flutter/Generated.xcconfig
+
+# macOS
+macos/Flutter/ephemeral/
+macos/Pods/
+macos/build/
+
+# Windows
+windows/runner/Debug/
+windows/runner/Release/
+windows/flutter/ephemeral/
+windows/build/
+
+# Web
+web/.dart_tool/
+web/build/
+
+# Linux
+linux/flutter/ephemeral/
+linux/build/
+
+# Symbolic links or temporary folders
+.symlinks/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# Coverage
+coverage/
+*.lcov
+
+# Misc
+*.DS_Store
+*.class
+*.swp
+*.swo
+*.out
