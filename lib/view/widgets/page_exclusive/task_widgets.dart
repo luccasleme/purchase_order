@@ -1,39 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:purchase_order/controller/home_controller.dart';
-import 'package:purchase_order/controller/task_controller.dart';
-import 'package:purchase_order/utils/size.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:purchase_order/features/orders/presentation/providers/orders_notifier.dart';
+import 'package:purchase_order/core/utils/size.dart';
 
-class TaskSearch extends StatelessWidget {
+class TaskSearch extends ConsumerWidget {
   final int index;
-  final TaskController taskController = Get.find();
-  final HomeController homeController = Get.find();
-  TaskSearch({required this.index, super.key});
+  final TextEditingController searchController;
+
+  const TaskSearch({
+    required this.index,
+    required this.searchController,
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    final keys = homeController.searchHomeList.keys.toList();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ordersState = ref.watch(ordersProvider);
+    final ordersNotifier = ref.read(ordersProvider.notifier);
+
+    final keys = ordersState.ordersByStatus.keys.toList();
     keys.sort((a, b) => a.length.compareTo(b.length));
-    search() {
-      homeController.resetSearch();
-      homeController.search(
-        keys[index],
-        taskController.searchController.text,
-        homeController.searchHomeList[keys[index]],
-      );
+
+    void search() {
+      if (keys.length > index) {
+        final originalList = ordersState.ordersByStatus[keys[index]] ?? [];
+        ordersNotifier.search(
+          keys[index],
+          searchController.text,
+          originalList,
+        );
+      }
     }
 
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(200)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(200),
+        ),
         width: Screen.width(context) / 1.45,
         height: Screen.height(context) / 22,
         child: TextField(
-          controller: taskController.searchController,
+          controller: searchController,
           onChanged: (_) => search(),
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             label: Text('Search'),
             floatingLabelBehavior: FloatingLabelBehavior.never,
             border: InputBorder.none,
