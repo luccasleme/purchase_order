@@ -9,13 +9,23 @@ import 'package:purchase_order/view/pages/login.dart';
 import 'package:purchase_order/view/pages/splash.dart';
 import 'package:purchase_order/view/pages/task.dart';
 
+class _AuthStateNotifier extends ChangeNotifier {
+  final Ref _ref;
+
+  _AuthStateNotifier(this._ref) {
+    _ref.listen(authProvider, (previous, next) {
+      notifyListeners();
+    });
+  }
+}
+
 final routerProvider = Provider<GoRouter>(
   (ref) {
-    final authState = ref.watch(authProvider);
-
     return GoRouter(
       initialLocation: AppRoutes.splash,
+      refreshListenable: _AuthStateNotifier(ref),
       redirect: (context, state) {
+        final authState = ref.read(authProvider);
         final isLoading = authState.isLoading;
         final isLoggedIn = authState.user != null;
         final isGoingToSplash = state.matchedLocation == AppRoutes.splash;

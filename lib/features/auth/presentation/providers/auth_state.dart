@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:purchase_order/features/auth/domain/entities/user_entity.dart';
 
+class _Undefined {
+  const _Undefined();
+}
+
 class AuthState extends Equatable {
   final UserEntity? user;
   final bool showSignUp;
@@ -19,7 +23,7 @@ class AuthState extends Equatable {
   });
 
   AuthState copyWith({
-    UserEntity? user,
+    Object? user = const _Undefined(),
     bool? showSignUp,
     bool? isChecked,
     bool? isPasswordVisible,
@@ -27,7 +31,7 @@ class AuthState extends Equatable {
     String? errorMessage,
   }) {
     return AuthState(
-      user: user ?? this.user,
+      user: user == const _Undefined() ? this.user : user as UserEntity?,
       showSignUp: showSignUp ?? this.showSignUp,
       isChecked: isChecked ?? this.isChecked,
       isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
