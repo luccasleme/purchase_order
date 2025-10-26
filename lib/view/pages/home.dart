@@ -33,6 +33,9 @@ class HomePage extends ConsumerWidget {
           IconButton(
             onPressed: () async {
               await authNotifier.signOut();
+              if (context.mounted) {
+                context.go(AppRoutes.login);
+              }
             },
             icon: const Icon(
               Icons.logout,
