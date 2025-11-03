@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:purchase_order/core/utils/date_formatter.dart';
 import 'package:purchase_order/core/utils/size.dart';
 import 'package:purchase_order/features/orders/presentation/providers/orders_notifier.dart';
+import 'package:purchase_order/routes/app_routes.dart';
 
 class TaskDetail extends ConsumerWidget {
   final int i;
@@ -118,8 +120,11 @@ class TaskDetail extends ConsumerWidget {
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.red,
                                   foregroundColor: Colors.white),
-                              onPressed: () {
-                                ordersNotifier.closeOrder(order);
+                              onPressed: () async {
+                                await ordersNotifier.closeOrder(order);
+                                if (context.mounted) {
+                                  context.go(AppRoutes.home);
+                                }
                               },
                               child: const Text('Close'),
                             ),
@@ -129,8 +134,11 @@ class TaskDetail extends ConsumerWidget {
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.green,
                                   foregroundColor: Colors.white),
-                              onPressed: () {
-                                ordersNotifier.openOrder(order);
+                              onPressed: () async {
+                                await ordersNotifier.openOrder(order);
+                                if (context.mounted) {
+                                  context.go(AppRoutes.home);
+                                }
                               },
                               child: const Text('Open'),
                             ),

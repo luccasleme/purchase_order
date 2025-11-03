@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:purchase_order/features/auth/presentation/pages/login.dart';
+import 'package:purchase_order/features/auth/presentation/pages/splash.dart';
 import 'package:purchase_order/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:purchase_order/features/orders/presentation/pages/detail.dart';
+import 'package:purchase_order/features/orders/presentation/pages/home.dart';
+import 'package:purchase_order/features/orders/presentation/pages/task.dart';
 import 'package:purchase_order/routes/app_routes.dart';
-import 'package:purchase_order/view/pages/detail.dart';
-import 'package:purchase_order/view/pages/home.dart';
-import 'package:purchase_order/view/pages/login.dart';
-import 'package:purchase_order/view/pages/splash.dart';
-import 'package:purchase_order/view/pages/task.dart';
 
 class _AuthStateNotifier extends ChangeNotifier {
   final Ref _ref;
@@ -65,7 +65,12 @@ final routerProvider = Provider<GoRouter>(
         GoRoute(
           path: AppRoutes.taskList,
           builder: (context, state) {
-            final extra = state.extra as Map<String, dynamic>;
+            final extra = state.extra as Map<String, dynamic>?;
+            if (extra == null) {
+              return const Scaffold(
+                body: Center(child: Text('Missing route parameters')),
+              );
+            }
             return TaskListPage(
               title: extra['title'] as String,
               i: extra['index'] as int,
@@ -75,7 +80,12 @@ final routerProvider = Provider<GoRouter>(
         GoRoute(
           path: AppRoutes.detail,
           builder: (context, state) {
-            final extra = state.extra as Map<String, dynamic>;
+            final extra = state.extra as Map<String, dynamic>?;
+            if (extra == null) {
+              return const Scaffold(
+                body: Center(child: Text('Missing route parameters')),
+              );
+            }
             return TaskDetail(
               i: extra['i'] as int,
               index: extra['index'] as int,

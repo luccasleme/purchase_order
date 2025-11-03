@@ -1,11 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:purchase_order/core/presentation/widgets/alert.dart';
 import 'package:purchase_order/core/providers/providers.dart';
 import 'package:purchase_order/core/utils/theme.dart';
 import 'package:purchase_order/routes/router.dart';
-import 'package:purchase_order/view/widgets/common/alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 

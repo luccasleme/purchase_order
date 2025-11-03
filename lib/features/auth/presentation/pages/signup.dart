@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:purchase_order/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:purchase_order/core/presentation/widgets/bottombanner.dart';
 import 'package:purchase_order/core/utils/size.dart';
-import 'package:purchase_order/view/pages/login.dart';
-import 'package:purchase_order/view/widgets/common/bottombanner.dart';
-import 'package:purchase_order/view/widgets/page_exclusive/login_widgets.dart';
-import 'package:purchase_order/view/widgets/page_exclusive/signup_widgets.dart';
+import 'package:purchase_order/features/auth/presentation/pages/login.dart';
+import 'package:purchase_order/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:purchase_order/features/auth/presentation/widgets/login_widgets.dart';
+import 'package:purchase_order/features/auth/presentation/widgets/signup_widgets.dart';
 
 class SignUpPage extends ConsumerWidget {
   const SignUpPage({super.key});

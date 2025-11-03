@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchase_order/core/constants/app_constants.dart';
+import 'package:purchase_order/core/presentation/widgets/alert.dart';
 import 'package:purchase_order/core/providers/providers.dart';
 import 'package:purchase_order/features/auth/presentation/providers/auth_state.dart';
-import 'package:purchase_order/view/widgets/common/alert.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final Ref ref;
@@ -13,14 +13,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   AuthNotifier(this.ref) : super(const AuthState()) {
     _checkAutoLogin();
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    nameController.dispose();
-    super.dispose();
+    // Ensure controllers are disposed when the provider is disposed
+    ref.onDispose(() {
+      emailController.dispose();
+      passwordController.dispose();
+      nameController.dispose();
+    });
   }
 
   Future<void> _checkAutoLogin() async {

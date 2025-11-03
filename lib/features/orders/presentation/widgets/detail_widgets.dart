@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:purchase_order/utils/size.dart';
+import 'package:purchase_order/core/utils/size.dart';
 
 class DetailDrawer extends StatelessWidget {
   const DetailDrawer({super.key});
