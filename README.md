@@ -165,7 +165,6 @@ Detailed order view showing:
 - **Date**: Order date (11 OCT 2018)
 
 ### 5. Status Update Flow
-<img src="docs/screenshots/loading.png" width="300" alt="Loading state during order update">
 <img src="docs/screenshots/success_banner.png" width="300" alt="Success banner after closing order">
 
 The status update demonstrates:
