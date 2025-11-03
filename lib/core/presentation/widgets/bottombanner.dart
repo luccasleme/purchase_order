@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:purchase_order/utils/size.dart';
+import 'package:purchase_order/core/utils/size.dart';
 
 class BottomBanner extends StatelessWidget {
   const BottomBanner({super.key});

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:purchase_order/features/orders/presentation/providers/orders_notifier.dart';
 import 'package:purchase_order/core/utils/date_formatter.dart';
 import 'package:purchase_order/core/utils/size.dart';
+import 'package:purchase_order/features/orders/presentation/providers/orders_notifier.dart';
+import 'package:purchase_order/features/orders/presentation/widgets/task_widgets.dart';
 import 'package:purchase_order/routes/app_routes.dart';
-import 'package:purchase_order/view/widgets/page_exclusive/task_widgets.dart';
 
 class TaskListPage extends ConsumerStatefulWidget {
   final String title;

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:purchase_order/core/presentation/widgets/alert.dart';
 import 'package:purchase_order/core/providers/providers.dart';
 import 'package:purchase_order/features/orders/domain/entities/order_entity.dart';
 import 'package:purchase_order/features/orders/presentation/providers/orders_state.dart';
-import 'package:purchase_order/view/widgets/common/alert.dart';
 
 class OrdersNotifier extends StateNotifier<OrdersState> {
   final Ref ref;
