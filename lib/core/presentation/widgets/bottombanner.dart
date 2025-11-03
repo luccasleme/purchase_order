@@ -16,7 +16,7 @@ class BottomBanner extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(right: 8.0, bottom: 4),
           child: Text(
-            'Porfolio by Luccas F. Leme',
+            'Portfolio by Luccas F. Leme',
             textAlign: TextAlign.left,
             style: TextStyle(
               color: Colors.white,
