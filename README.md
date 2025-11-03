@@ -1,5 +1,7 @@
 # Purchase Order Management System
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 ## Overview
 
 A Flutter mobile application for purchase order management, built on MVVM architecture and Firebase backend.
