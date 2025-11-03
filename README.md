@@ -18,6 +18,8 @@ The app data was sourced from an Excel file containing purchase order data. The 
 
 This is a sample real-world data migration scenario from pre-existing spreadsheets to a new cloud database.
 
+**Important Note:** The Excel import was a **one-time data injection** to populate the application with sample data. The application itself does **not** have built-in functionality to import Excel files. All data management operations (create, read, update, delete) are performed exclusively through Firebase Firestore.
+
 ---
 
 ## Backend: Firebase
@@ -115,6 +117,129 @@ lib/
 - Use Case Pattern
 - Dependency Injection
 - Immutable State
+
+---
+
+## Error Logging
+
+**Status: Not Implemented**
+
+The application currently **does not implement** a centralized error logging system. This is a planned feature for future versions.
+
+**Current Error Handling:**
+- Errors are handled locally using the Either pattern (dartz library)
+- Failed operations return `Left(Failure)` with error messages
+- Errors are displayed to users through UI feedback (banners, dialogs)
+- No error persistence or remote logging occurs
+
+**Planned Technologies:**
+- Firebase Crashlytics for crash reporting
+- Cloud Functions for server-side error processing
+- Custom error aggregation dashboard
+- User session context tracking
+
+For now, all error handling remains local and transient within the application lifecycle.
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+Before running this project, ensure you have:
+
+- **Flutter SDK**: Version 3.x or higher ([Install Flutter](https://flutter.dev/docs/get-started/install))
+- **Dart SDK**: Version 3.x or higher (bundled with Flutter)
+- **Firebase Account**: Free tier is sufficient ([Create Firebase Account](https://firebase.google.com/))
+- **IDE**: VS Code or Android Studio with Flutter/Dart plugins
+- **Git**: For cloning the repository
+- **FlutterFire CLI**: For Firebase configuration (`dart pub global activate flutterfire_cli`)
+
+### Setup Instructions
+
+#### 1. Clone the Repository
+
+```bash
+git clone https://github.com/luccasleme/purchase_order.git
+cd purchase_order
+```
+
+#### 2. Install Dependencies
+
+```bash
+flutter pub get
+```
+
+#### 3. Firebase Configuration
+
+Create a new Firebase project and configure the following services:
+
+**a) Create Firebase Project**
+- Go to [Firebase Console](https://console.firebase.google.com/)
+- Click "Add project" and follow the setup wizard
+- Enable Google Analytics (optional)
+
+**b) Enable Firebase Services**
+- **Authentication**: Enable Email/Password sign-in method
+- **Firestore Database**: Create database in production mode (or test mode for development)
+
+**c) Configure FlutterFire**
+
+Run the FlutterFire CLI to automatically configure your app:
+
+```bash
+flutterfire configure
+```
+
+This will:
+- Prompt you to select your Firebase project
+- Generate platform-specific configuration files
+- Update [firebase.json](firebase.json) and [lib/firebase_options.dart](lib/firebase_options.dart)
+
+**Note:** The [firebase.json](firebase.json) file contains only public project identifiers (projectId, appId), not sensitive credentials. Firebase authentication happens through SDK initialization.
+
+**d) Firestore Data Structure**
+
+Create the following collections in Firestore:
+
+```
+/users/{userId}          - User profiles (auto-created on signup)
+/orders/allOrders        - Purchase order records (requires manual data import)
+```
+
+For sample data, you can manually add documents or use the Firebase Console to import JSON data.
+
+#### 4. Run the Application
+
+**For Android:**
+```bash
+flutter run
+```
+
+**For iOS (requires macOS):**
+```bash
+flutter run
+```
+
+**For specific device:**
+```bash
+flutter devices              # List available devices
+flutter run -d <device-id>   # Run on specific device
+```
+
+#### 5. Create Test Account
+
+On first launch:
+1. Click "Sign Up" on the login screen
+2. Enter email and password
+3. The app will create a user profile in Firestore automatically
+
+### Troubleshooting
+
+- **"Firebase not initialized"**: Ensure `flutterfire configure` was run successfully
+- **"No orders found"**: The orders collection needs to be populated with sample data
+- **Build errors**: Run `flutter clean && flutter pub get` and try again
+- **iOS CocoaPods issues**: Run `cd ios && pod install && cd ..`
 
 ---
 
